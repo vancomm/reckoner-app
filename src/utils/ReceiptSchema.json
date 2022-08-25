@@ -1,0 +1,217 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "Document": {
+      "properties": {
+        "receipt": {
+          "$ref": "#/definitions/Receipt"
+        }
+      },
+      "type": "object"
+    },
+    "Item": {
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "nds": {
+          "type": "number"
+        },
+        "paymentType": {
+          "type": "number"
+        },
+        "price": {
+          "type": "number"
+        },
+        "productType": {
+          "type": "number"
+        },
+        "quantity": {
+          "type": "number"
+        },
+        "sum": {
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "Operation": {
+      "properties": {
+        "date": {
+          "type": "number"
+        },
+        "sum": {
+          "type": "number"
+        },
+        "type": {
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "Organization": {
+      "properties": {
+        "inn": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Query": {
+      "properties": {
+        "date": {
+          "type": "string"
+        },
+        "documentId": {
+          "type": "number"
+        },
+        "fiscalSign": {
+          "type": "string"
+        },
+        "fsId": {
+          "type": "string"
+        },
+        "operationType": {
+          "type": "number"
+        },
+        "sum": {
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "Receipt": {
+      "properties": {
+        "cashTotalSum": {
+          "type": "number"
+        },
+        "code": {
+          "type": "number"
+        },
+        "creditSum": {
+          "type": "number"
+        },
+        "dateTime": {
+          "type": "number"
+        },
+        "ecashTotalSum": {
+          "type": "number"
+        },
+        "fiscalDocumentFormatVer": {
+          "type": "number"
+        },
+        "fiscalDocumentNumber": {
+          "type": "number"
+        },
+        "fiscalDriveNumber": {
+          "type": "string"
+        },
+        "fiscalSign": {
+          "type": "number"
+        },
+        "items": {
+          "items": {
+            "$ref": "#/definitions/Item"
+          },
+          "type": "array"
+        },
+        "kktRegId": {
+          "type": "string"
+        },
+        "nds10": {
+          "type": "number"
+        },
+        "nds18": {
+          "type": "number"
+        },
+        "operationType": {
+          "type": "number"
+        },
+        "operator": {
+          "type": "string"
+        },
+        "prepaidSum": {
+          "type": "number"
+        },
+        "provisionSum": {
+          "type": "number"
+        },
+        "requestNumber": {
+          "type": "number"
+        },
+        "retailPlace": {
+          "type": "string"
+        },
+        "retailPlaceAddress": {
+          "type": "string"
+        },
+        "shiftNumber": {
+          "type": "number"
+        },
+        "taxationType": {
+          "type": "number"
+        },
+        "totalSum": {
+          "type": "number"
+        },
+        "user": {
+          "type": "string"
+        },
+        "userInn": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ReceiptDocumentItem": {
+      "properties": {
+        "createdAt": {
+          "type": "number"
+        },
+        "id": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "operation": {
+          "$ref": "#/definitions/Operation"
+        },
+        "organization": {
+          "$ref": "#/definitions/Organization"
+        },
+        "qr": {
+          "type": "string"
+        },
+        "query": {
+          "$ref": "#/definitions/Query"
+        },
+        "seller": {
+          "$ref": "#/definitions/Organization"
+        },
+        "status": {
+          "type": "number"
+        },
+        "ticket": {
+          "$ref": "#/definitions/Ticket"
+        }
+      },
+      "type": "object"
+    },
+    "Ticket": {
+      "properties": {
+        "document": {
+          "$ref": "#/definitions/Document"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "items": {
+    "$ref": "#/definitions/ReceiptDocumentItem"
+  },
+  "type": "array"
+}

@@ -1,0 +1,296 @@
+[
+  {
+    "status": 2,
+    "seller": {
+      "name": "ООО \"ГИПЕРГЛОБУС\"",
+      "inn": "7743543761"
+    },
+    "operation": {
+      "date": 678479880,
+      "type": 1,
+      "sum": 362500
+    },
+    "id": "62c17326bfb2596a7ace4ec0",
+    "organization": {
+      "name": "ООО \"ГИПЕРГЛОБУС\"",
+      "inn": "7743543761"
+    },
+    "qr": "t=20220702T2138&s=3625.00&fn=9960440300915442&i=48841&fp=601974791&n=1",
+    "query": {
+      "date": "2022-07-02T21:38",
+      "documentId": 48841,
+      "fsId": "9960440300915442",
+      "fiscalSign": "601974791",
+      "operationType": 1,
+      "sum": 362500
+    },
+    "ticket": {
+      "document": {
+        "receipt": {
+          "retailPlace": "Гипермаркет \"Глобус\"",
+          "totalSum": 362500,
+          "operator": "SCO_61                                                          ",
+          "userInn": "7743543761  ",
+          "items": [
+            {
+              "quantity": 2,
+              "productType": 1,
+              "nds": 1,
+              "price": 7999,
+              "paymentType": 4,
+              "name": "КОКА-КОЛА 0,9Л",
+              "sum": 15998
+            },
+            {
+              "quantity": 1,
+              "productType": 1,
+              "nds": 1,
+              "price": 8699,
+              "paymentType": 4,
+              "name": "ФЬЮЗ ПЕРСИК 0,5Л",
+              "sum": 8699
+            },
+            {
+              "quantity": 1,
+              "productType": 1,
+              "nds": 1,
+              "price": 11999,
+              "paymentType": 4,
+              "name": "ШВЕППС МОХИТО 0,9Л",
+              "sum": 11999
+            },
+            {
+              "quantity": 2,
+              "productType": 1,
+              "nds": 1,
+              "price": 4999,
+              "paymentType": 4,
+              "name": "СВЯТОЙ ИСТОЧ Б\/Г 1,5",
+              "sum": 9998
+            },
+            {
+              "quantity": 0.72199999999999998,
+              "productType": 1,
+              "nds": 2,
+              "price": 37599,
+              "paymentType": 4,
+              "name": "ФИЛЕ КУР. Б\/К ВЕС",
+              "sum": 27146
+            },
+            {
+              "quantity": 1,
+              "productType": 1,
+              "nds": 2,
+              "price": 15999,
+              "paymentType": 4,
+              "name": "СОК РИЧ АПЕЛЬСИН 1Л",
+              "sum": 15999
+            },
+            {
+              "quantity": 1,
+              "productType": 2,
+              "nds": 1,
+              "price": 35484,
+              "paymentType": 4,
+              "name": "ВОДКА ОСОБ ТАЛКА0,5Л",
+              "sum": 35484
+            },
+            {
+              "quantity": 2,
+              "productType": 1,
+              "nds": 1,
+              "price": 10999,
+              "paymentType": 4,
+              "name": "ЧИПСЫ СЛИВОЧ СЫР100Г",
+              "sum": 21998
+            },
+            {
+              "quantity": 2,
+              "productType": 1,
+              "nds": 2,
+              "price": 5999,
+              "paymentType": 4,
+              "name": "САЛ\/ЛИСТ\/ГОРШ.NOVIK",
+              "sum": 11998
+            },
+            {
+              "quantity": 1,
+              "productType": 1,
+              "nds": 2,
+              "price": 15999,
+              "paymentType": 4,
+              "name": "ЛАПША РИС\/WOK 125Г",
+              "sum": 15999
+            },
+            {
+              "quantity": 1,
+              "productType": 1,
+              "nds": 2,
+              "price": 6999,
+              "paymentType": 4,
+              "name": "КРУТОНЫ ЧЕСНОК 100Г",
+              "sum": 6999
+            },
+            {
+              "quantity": 3,
+              "productType": 1,
+              "nds": 2,
+              "price": 9999,
+              "paymentType": 4,
+              "name": "СЕМЕЧ.СОЛ.ЗОЛСЕМ 200",
+              "sum": 29997
+            },
+            {
+              "quantity": 1,
+              "productType": 2,
+              "nds": 1,
+              "price": 6999,
+              "paymentType": 4,
+              "name": "ГАРАЖ АНАНАС 0,4Л",
+              "sum": 6999
+            },
+            {
+              "quantity": 1,
+              "productType": 2,
+              "nds": 1,
+              "price": 8000,
+              "paymentType": 4,
+              "name": "МЕД ФР К\/Б 5,9% 0,5Л",
+              "sum": 8000
+            },
+            {
+              "quantity": 1,
+              "productType": 1,
+              "nds": 2,
+              "price": 18599,
+              "paymentType": 4,
+              "name": "СЫР РОСС ЧАБАН 180Г",
+              "sum": 18599
+            },
+            {
+              "quantity": 1,
+              "productType": 1,
+              "nds": 2,
+              "price": 7999,
+              "paymentType": 4,
+              "name": "ТОМАТ ЧЕРРИ NOV250ГР",
+              "sum": 7999
+            },
+            {
+              "quantity": 1,
+              "productType": 1,
+              "nds": 2,
+              "price": 13599,
+              "paymentType": 4,
+              "name": "НАГГЕТ.КУР.ХРУС 300Г",
+              "sum": 13599
+            },
+            {
+              "quantity": 1,
+              "productType": 1,
+              "nds": 2,
+              "price": 13599,
+              "paymentType": 4,
+              "name": "НАГГЕТСЫ КУР.ТР.300Г",
+              "sum": 13599
+            },
+            {
+              "quantity": 1,
+              "productType": 1,
+              "nds": 2,
+              "price": 17599,
+              "paymentType": 4,
+              "name": "КРУГГ.СЫР\/СОУСОМ 250",
+              "sum": 17599
+            },
+            {
+              "quantity": 1,
+              "productType": 1,
+              "nds": 2,
+              "price": 18299,
+              "paymentType": 4,
+              "name": "ГОТОВЫЕ ХОТСТЕРЫ 250",
+              "sum": 18299
+            },
+            {
+              "quantity": 1,
+              "productType": 1,
+              "nds": 1,
+              "price": 13899,
+              "paymentType": 4,
+              "name": "ЦЕЗАРЬ ГЛОБУС 200Г",
+              "sum": 13899
+            },
+            {
+              "quantity": 1,
+              "productType": 2,
+              "nds": 1,
+              "price": 10999,
+              "paymentType": 4,
+              "name": "ЧЕСТЕРС СЛ ЯБЛ 0,45",
+              "sum": 10999
+            },
+            {
+              "quantity": 1,
+              "productType": 2,
+              "nds": 1,
+              "price": 5999,
+              "paymentType": 4,
+              "name": "СИДР СОМЕР 0,4Л",
+              "sum": 5999
+            },
+            {
+              "quantity": 1,
+              "productType": 2,
+              "nds": 1,
+              "price": 8000,
+              "paymentType": 4,
+              "name": "МЕД ФР К\/Б 5,9% 0,5Л",
+              "sum": 8000
+            },
+            {
+              "quantity": 1,
+              "productType": 1,
+              "nds": 1,
+              "price": 4499,
+              "paymentType": 4,
+              "name": "ШОК БАТ ТВИКСЭКСТР82",
+              "sum": 4499
+            },
+            {
+              "quantity": 3,
+              "productType": 1,
+              "nds": 1,
+              "price": 699,
+              "paymentType": 4,
+              "name": "ПАКЕТ КАССА ГЛ САМ",
+              "sum": 2097
+            }
+          ],
+          "code": 3,
+          "ecashTotalSum": 0,
+          "requestNumber": 288,
+          "fiscalDriveNumber": "9960440300915442",
+          "shiftNumber": 175,
+          "kktRegId": "0003745919030770    ",
+          "provisionSum": 0,
+          "nds18": 27445,
+          "dateTime": 1656787080,
+          "retailPlaceAddress": "143082, г. Москва, Новорижское шоссе 22-й км, вл.1, стр.1",
+          "fiscalSign": 601974791,
+          "user": "ООО \"ГИПЕРГЛОБУС\"",
+          "prepaidSum": 0,
+          "cashTotalSum": 362500,
+          "fiscalDocumentNumber": 48841,
+          "operationType": 1,
+          "fiscalDocumentFormatVer": 4,
+          "creditSum": 0,
+          "taxationType": 1,
+          "nds10": 17984
+        }
+      }
+    },
+    "kind": "kkt",
+    "createdAt": 678537894
+  }
+]
