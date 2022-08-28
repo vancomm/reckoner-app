@@ -1,48 +1,59 @@
 import { useState } from "react";
 import ReceiptData from "../../types/ReceiptData";
 import parseReceipt from "../../utils/parseReceiptDocument";
+import StageContainer from "../StageContainer";
 
 interface FileFormProps {
-  submitFn: (receiptDocument: ReceiptData) => any;
+  initReceiptData?: ReceiptData;
+  setFn: (receiptData: ReceiptData) => any;
+  nextFn: () => void;
 }
 
-export default function FileForm({ submitFn }: FileFormProps) {
-  const [file, setFile] = useState<File>();
+export default function FileForm({
+  initReceiptData,
+  setFn,
+  nextFn,
+}: FileFormProps) {
+  const [receiptData, setReceiptData] = useState<ReceiptData | undefined>(
+    initReceiptData
+  );
 
   return (
-    <div className="container">
+    <StageContainer
+      handleNext={() => {
+        if (receiptData) setFn(receiptData);
+        nextFn();
+      }}
+      nextCondition={!!receiptData}
+    >
       <span className="title">Receipt</span>
+
       <div className="file-form">
         <input
           className="file-input"
           type="file"
           accept="application/json"
-          onChange={(e) => {
-            setFile(e.target.files?.[0]);
-          }}
-        />
-        <button
-          className="next-btn"
-          disabled={!file || file.type !== "application/json"}
-          onClick={async (e) => {
-            e.currentTarget.blur();
-            if (!file || file.type !== "application/json") return;
-
-            const content = await file.text();
-
-            const receiptOption = parseReceipt(content);
-
-            if (!receiptOption.success) {
-              alert(receiptOption.message);
+          onChange={async (e) => {
+            const inputFile = e.target.files?.[0];
+            if (!inputFile) return;
+            if (inputFile.type !== "application/json") {
+              alert("Uploaded file must be of JSON format");
               return;
             }
-
-            submitFn(receiptOption.value);
+            const content = await inputFile.text();
+            const receiptDataOption = parseReceipt(content);
+            if (!receiptDataOption.success) {
+              alert(receiptDataOption.message);
+              return;
+            }
+            setReceiptData(receiptDataOption.value);
           }}
-        >
-          Next
-        </button>
+        />
       </div>
-    </div>
+
+      {receiptData && (
+        <span className="message">{`Detected a receipt for ${receiptData.items.length} items`}</span>
+      )}
+    </StageContainer>
   );
 }

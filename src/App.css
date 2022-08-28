@@ -1,8 +1,12 @@
 :root {
-  --bg-start: rgb(0, 128, 255);
-  --bg-end: rgb(43, 226, 98);
-  --bg-direction: -45deg;
-  --bg-container: rgba(0, 71, 103, 0.5);
+  --bg-start: rgb(199, 60, 0);
+  --bg-end: rgb(255, 187, 0);
+  --bg-direction: 135deg;
+  --bg-container: rgba(71, 71, 71, 0.5);
+  --bg-overlay: rgba(47, 47, 47, 0.3);
+  --bg-overlay-hover: rgba(0, 0, 0, 0.3);
+  --bg-overlay-active: rgba(19, 19, 19, 0.5);
+  --green: #1faa42;
   --divider: rgba(156, 197, 215, 0.8);
 }
 
@@ -13,11 +17,12 @@
   background-attachment: fixed;
   background-size: cover;
   background-repeat: no-repeat;
-  background-image: -webkit-linear-gradient(var(--bg-direction), var(--bg-start), var(--bg-end));
+  /* background-image: -webkit-linear-gradient(var(--bg-direction), var(--bg-start), var(--bg-end));
   background-image: -moz-linear-gradient(var(--bg-direction), var(--bg-start), var(--bg-end));
   background-image: -ms-linear-gradient(var(--bg-direction), var(--bg-start), var(--bg-end));
   background-image: -o-linear-gradient(var(--bg-direction), var(--bg-start), var(--bg-end));
-  background-image: linear-gradient(var(--bg-direction), var(--bg-start), var(--bg-end));
+  background-image: linear-gradient(var(--bg-direction), var(--bg-start), var(--bg-end)); */
+  background-image: radial-gradient(circle farthest-corner at 10% 20%, rgba(14, 174, 87, 1) 0%, rgba(12, 116, 117, 1) 90%);
 }
 
 .app {
@@ -60,38 +65,56 @@
   padding-left: 5px;
   font-size: 0.9rem;
   border: none;
-  background-color: rgba(2, 33, 47, 0.3);
+  background-color: var(--bg-overlay);
   border-radius: 4px;
   color: inherit;
   transition: background 100ms ease-in;
 }
 
-.user-input:focus,
 .user-input:hover {
-  outline: none;
-  background-color: rgba(9, 19, 25, 0.5)
+  background-color: var(--bg-overlay-hover);
 }
 
-.user-input:hover {
-  transition-delay: 10ms;
+.user-input:focus {
+  outline: none;
+  background-color: var(--bg-overlay-active);
 }
 
 .file-input {
   width: 100%;
 }
 
-.next-btn {
+.btn-container {
+  display: flex;
+  gap: .5rem;
+  /* margin-top: 10px; */
+}
+
+[class$="-btn"] {
   width: fit-content;
+  background-color: var(--bg-overlay);
   border: none;
-  border-radius: 4px;
-  padding: 5px 12px 4px;
-  background-color: rgb(42, 166, 255);
+  border-radius: .3em;
+  padding: .6em 1em .4em;
   color: inherit;
+  font-size: 1rem;
+}
+
+[class$="-btn"]:hover {
+  cursor: pointer;
+  background-color: var(--bg-overlay-hover);
+}
+
+[class$="-btn"]:active {
+  background-color: var(--bg-overlay-active);
+}
+
+.next-btn {
+  background-color: rgb(0, 128, 255);
 }
 
 .next-btn:hover,
 .next-btn:focus {
-  cursor: pointer;
   filter: brightness(90%);
 }
 
@@ -100,11 +123,23 @@
 }
 
 .next-btn:disabled {
+  cursor: not-allowed;
   filter: grayscale();
+  color: #bbb;
 }
 
-[class$="-form"] .next-btn {
-  margin-top: 10px;
+.again-btn {
+  background-color: var(--green);
+}
+
+.again-btn:hover {
+  background-color: var(--green);
+  filter: brightness(90%) !important
+}
+
+.again-btn:active {
+  background-color: var(--green);
+  filter: brightness(80%);
 }
 
 .file-form {
@@ -129,16 +164,66 @@
   padding: 0;
   margin: 0;
   list-style-type: none;
-  
 }
 
 .item {
-  /* text-transform: capitalize; */
-  font-weight: bold;
+  background-color: var(--bg-overlay);
+  padding: .8em;
+  border-radius: .4em;
+  display: flex;
+  flex-direction: column;
+  row-gap: 1em;
+}
+
+/* .item-details {
+  display: flex;
+  flex-direction: column;
+} */
+
+.item-name {
+  font-size: 1.4rem;
+}
+
+.item-price, .item-qty {
+  font: 0.9rem monospace;
 }
 
 .item:not(:last-child) {
   margin-bottom: 10px;
+}
+
+.item-names {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  margin-top: .3em;
+  display: flex;
+  flex-wrap: wrap;
+  /* justify-content: space-evenly; */
+  column-gap: .2em;
+  row-gap: .5em;
+}
+
+.item-names-input {
+  display: none;
+}
+
+.item-names-label {
+  cursor: pointer;
+  user-select: none;
+  padding: 0.3em 0.2em 0.1em;
+  background-color: var(--bg-overlay);
+  border-radius: 0.3em;
+  transition: all 100ms;
+}
+
+.item-names-label:hover {
+  background-color: var(--bg-overlay-hover);
+}
+
+:checked + .item-names-label{
+  background-color: rgba(255, 255, 255);
+  color: #333;
 }
 
 hr {
@@ -147,4 +232,8 @@ hr {
   margin: 0;
   background-color: var(--divider);
   border: none;
+}
+
+.message {
+  font-size: 0.9rem;
 }
