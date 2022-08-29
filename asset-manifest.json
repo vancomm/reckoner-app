@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/reckoner-app/static/css/main.95d0598b.css",
+    "main.css": "/reckoner-app/static/css/main.8c57aa8d.css",
     "main.js": "/reckoner-app/static/js/main.67555d5d.js",
     "static/js/787.d84f24ea.chunk.js": "/reckoner-app/static/js/787.d84f24ea.chunk.js",
     "index.html": "/reckoner-app/index.html",
-    "main.95d0598b.css.map": "/reckoner-app/static/css/main.95d0598b.css.map",
+    "main.8c57aa8d.css.map": "/reckoner-app/static/css/main.8c57aa8d.css.map",
     "main.67555d5d.js.map": "/reckoner-app/static/js/main.67555d5d.js.map",
     "787.d84f24ea.chunk.js.map": "/reckoner-app/static/js/787.d84f24ea.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.95d0598b.css",
+    "static/css/main.8c57aa8d.css",
     "static/js/main.67555d5d.js"
   ]
 }
