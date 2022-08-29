@@ -1,27 +1,17 @@
-import { useState } from "react";
-import ReceiptData from "../../types/ReceiptData";
-import parseReceipt from "../../utils/parseReceiptDocument";
+import { useAppState } from "../../contexts/AppStateContext";
+import parseReceipt, { UniqueItem } from "../../utils/parseReceiptDocument";
 import StageContainer from "../StageContainer";
 
-interface FileFormProps {
-  initReceiptData?: ReceiptData;
-  setFn: (receiptData: ReceiptData) => any;
+interface ReceiptFormProps {
   nextFn: () => void;
 }
 
-export default function FileForm({
-  initReceiptData,
-  setFn,
-  nextFn,
-}: FileFormProps) {
-  const [receiptData, setReceiptData] = useState<ReceiptData | undefined>(
-    initReceiptData
-  );
+export default function ReceiptForm({ nextFn }: ReceiptFormProps) {
+  const { receiptData, setReceiptData } = useAppState();
 
   return (
     <StageContainer
       handleNext={() => {
-        if (receiptData) setFn(receiptData);
         nextFn();
       }}
       nextCondition={!!receiptData}
@@ -46,7 +36,13 @@ export default function FileForm({
               alert(receiptDataOption.message);
               return;
             }
-            setReceiptData(receiptDataOption.value);
+
+            const { items } = receiptDataOption.value;
+            const uniqueItems: UniqueItem[] = items.map((item, index) => ({
+              ...item,
+              index,
+            }));
+            setReceiptData({ items: uniqueItems });
           }}
         />
       </div>

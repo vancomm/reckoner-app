@@ -1,8 +1,13 @@
 import Ajv from "ajv";
-import ReceiptData from "../types/ReceiptData";
-import ReceiptDocument from "../types/ReceiptDocument";
+import { ReceiptData } from "../contexts/AppStateContext";
+
+import ReceiptDocument, { Item } from "../types/ReceiptDocument";
 import { makeFailed, makeSuccessful, Optional } from "./Optional";
 import receiptSchema from "./ReceiptSchema.json";
+
+export interface UniqueItem extends Item {
+  index: number;
+}
 
 const ajv = new Ajv();
 
@@ -13,7 +18,14 @@ export default function parseReceipt(json: string): Optional<ReceiptData> {
 
   if (!validate(data)) return makeFailed("Bad JSON format");
 
-  const value: ReceiptData = { items: data[0].ticket.document.receipt.items };
+  const items = data[0].ticket.document.receipt.items;
+
+  const uniqueItems: UniqueItem[] = items.map((item, index) => ({
+    ...item,
+    index,
+  }));
+
+  const value: ReceiptData = { items: uniqueItems };
 
   return makeSuccessful(value);
 }

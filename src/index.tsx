@@ -4,15 +4,18 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { NotificationsProvider } from "./contexts/NotificationContext";
+import { StateProvider } from "./contexts/AppStateContext";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <NotificationsProvider>
-      <App />
-    </NotificationsProvider>
+    <StateProvider>
+      <NotificationsProvider>
+        <App />
+      </NotificationsProvider>
+    </StateProvider>
   </React.StrictMode>
 );
 

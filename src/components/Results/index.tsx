@@ -1,14 +1,29 @@
-import { AssignedItem } from "../ItemsForm";
+import { useAppState } from "../../contexts/AppStateContext";
+import { UniqueItem } from "../../utils/parseReceiptDocument";
 import StageContainer from "../StageContainer";
 
+interface AssignedItem extends UniqueItem {
+  owners: string[];
+}
+
 interface ResultsProps {
-  items: AssignedItem[];
   backFn: () => void;
   againFn: () => void;
 }
 
-export default function Results({ items, backFn, againFn }: ResultsProps) {
-  const totals = items.reduce((acc, { sum, owners }) => {
+export default function Results({ backFn, againFn }: ResultsProps) {
+  const { receiptData, result } = useAppState();
+
+  if (!receiptData || !result) return null;
+
+  const { items } = receiptData;
+
+  const assignedItems: AssignedItem[] = items.map((item) => ({
+    ...item,
+    owners: result[item.index],
+  }));
+
+  const totals = assignedItems.reduce((acc, { sum, owners }) => {
     const share = sum / owners.length;
     owners.forEach((name) => {
       acc[name] = acc[name] ? acc[name] + share : share;

@@ -1,65 +1,34 @@
-import { useState } from "react";
-import { Item } from "../../types/ReceiptDocument";
+import { useAppState } from "../../contexts/AppStateContext";
 import StageContainer from "../StageContainer";
 
 interface ItemsFormProps {
-  items: Item[];
-  names: string[];
-  setFn: (items: AssignedItem[]) => any;
   backFn: () => void;
   nextFn: () => void;
 }
 
-interface UniqueItem extends Item {
-  index: number;
-}
+export default function ItemsForm({ backFn, nextFn }: ItemsFormProps) {
+  const { names, receiptData, result, setResult } = useAppState();
 
-export interface AssignedItem extends UniqueItem {
-  owners: string[];
-}
+  if (!names || !receiptData) return null;
 
-type ItemMap = Record<number, string[]>;
-
-export default function ItemsForm({
-  items,
-  names,
-  setFn,
-  backFn,
-  nextFn,
-}: ItemsFormProps) {
-  const [itemMap, setItemMap] = useState<ItemMap>({});
-
-  const uniqueItems: UniqueItem[] = items.map((item, index) => ({
-    ...item,
-    index,
-  }));
+  const { items } = receiptData;
 
   return (
     <StageContainer
       handleBack={() => {
-        const res: AssignedItem[] = uniqueItems.map((item) => ({
-          ...item,
-          owners: itemMap[item.index],
-        }));
-        setFn(res);
         backFn();
       }}
       handleNext={() => {
-        const res: AssignedItem[] = uniqueItems.map((item) => ({
-          ...item,
-          owners: itemMap[item.index],
-        }));
-        setFn(res);
         nextFn();
       }}
       nextCondition={
-        Object.keys(itemMap).length === uniqueItems.length &&
-        Object.values(itemMap).every((n) => n.length > 0)
+        Object.keys(result).length === items.length &&
+        Object.values(result).every((n) => n.length > 0)
       }
     >
       <span className="title">Items</span>
       <ul className="items">
-        {uniqueItems.map(({ index, ...item }) => (
+        {items.map(({ index, ...item }) => (
           <li id={`item-${index}`} key={`item-${index}`} className="item">
             <div className="item-details">
               <span className="item-name">{item.name.toLowerCase()}</span>
@@ -76,9 +45,9 @@ export default function ItemsForm({
                     className="item-names-input"
                     type="checkbox"
                     value={name}
-                    checked={!!itemMap[index]?.includes(name)}
+                    checked={!!result[index]?.includes(name)}
                     onChange={(e) => {
-                      setItemMap((state) => {
+                      setResult((state) => {
                         const { checked } = e.target;
                         const prev = state[index] ?? [];
                         const next = checked

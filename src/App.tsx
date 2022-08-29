@@ -1,77 +1,44 @@
 import { useState } from "react";
 
-import FileForm from "./components/FileForm";
-import NamesForm from "./components/NamesForm";
-import ItemsForm, { AssignedItem } from "./components/ItemsForm";
-import Results from "./components/Results";
+import { useAppState } from "./contexts/AppStateContext";
 
-import ReceiptData from "./types/ReceiptData";
+import ReceiptForm from "./components/ReceiptForm";
+import NamesForm from "./components/NamesForm";
+import ItemsForm from "./components/ItemsForm";
+import Results from "./components/Results";
 
 import "./App.css";
 
-const stages = ["file", "names", "items", "results"] as const;
+const stages = ["receipt", "names", "items", "results"] as const;
 
 type Stage = typeof stages[number];
 
 export default function App() {
-  const [stage, setStage] = useState<Stage>("file");
-
-  const [receiptData, setReceiptData] = useState<ReceiptData>();
-
-  const initNames = ["Vanya", "Sanya"]; // debugging purposes only
-
-  const [names, setNames] = useState<string[]>(initNames);
-
-  const [items, setItems] = useState<AssignedItem[]>([]);
+  const [stage, setStage] = useState<Stage>("receipt");
+  const { names, receiptData, result } = useAppState();
 
   return (
     <div className="app bg-gradient">
-      {stage === "file" && (
-        <FileForm
-          initReceiptData={receiptData}
-          setFn={(receiptData) => {
-            setReceiptData(receiptData);
-          }}
-          nextFn={() => setStage("names")}
-        />
-      )}
+      {stage === "receipt" && <ReceiptForm nextFn={() => setStage("names")} />}
 
       {stage === "names" && (
         <NamesForm
-          initNames={names}
-          setFn={(names) => {
-            setNames(names);
-          }}
-          backFn={() => {
-            setStage("file");
-          }}
-          nextFn={() => {
-            setStage("items");
-          }}
+          backFn={() => setStage("receipt")}
+          nextFn={() => setStage("items")}
         />
       )}
 
-      {stage === "items" && receiptData && (
+      {stage === "items" && receiptData && names && (
         <ItemsForm
-          items={receiptData.items}
-          names={names}
-          setFn={(items) => {
-            setItems(items);
-          }}
-          backFn={() => {
-            setStage("names");
-          }}
-          nextFn={() => {
-            setStage("results");
-          }}
+          backFn={() => setStage("names")}
+          nextFn={() => setStage("results")}
         />
       )}
 
-      {stage === "results" && items && (
+      {stage === "results" && result && (
         <Results
-          items={items}
           backFn={() => setStage("items")}
-          againFn={() => setStage("file")}
+          againFn={() => setStage("receipt")}
         />
       )}
     </div>
