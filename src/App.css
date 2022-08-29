@@ -290,6 +290,7 @@
 }
 
 .item-actions * {
+  cursor: pointer;
   font: 1rem monospace;
   width: 2em;
   aspect-ratio: 1;
