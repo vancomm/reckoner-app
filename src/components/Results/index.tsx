@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { useAppState } from "../../contexts/AppStateContext";
 import { UniqueItem } from "../../utils/parseReceiptDocument";
 import StageContainer from "../StageContainer";
@@ -45,13 +46,30 @@ export default function Results({ backFn, againFn }: ResultsProps) {
       ]}
     >
       <span className="title">Results</span>
-      {Object.entries(totals).map(([name, total], index) => {
-        return (
-          <div key={`total-${index}-${name}`}>
-            {name}: {total / 100}
-          </div>
-        );
-      })}
+      <div className="totals-container">
+        <div className="totals">
+          {Object.entries(totals)
+            .sort(([, totalA], [, totalB]) => totalB - totalA)
+            .map(([name, total], index) => {
+              return (
+                <Fragment>
+                  {index > 0 && <hr />}
+                  <div className="total" key={`total-${index}-${name}`}>
+                    <span className="name">
+                      {name}
+                      {": "}
+                    </span>
+                    <span className="value">
+                      {(
+                        Math.round(+(total / 100).toFixed(3) * 1e3) / 1e3
+                      ).toFixed(2)}
+                    </span>
+                  </div>
+                </Fragment>
+              );
+            })}
+        </div>
+      </div>
     </StageContainer>
   );
 }

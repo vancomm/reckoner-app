@@ -1,3 +1,5 @@
+import cn from "classnames";
+import { useState } from "react";
 import { useAppState } from "../../contexts/AppStateContext";
 import parseReceipt, { UniqueItem } from "../../utils/parseReceiptDocument";
 import StageContainer from "../StageContainer";
@@ -8,6 +10,7 @@ interface ReceiptFormProps {
 
 export default function ReceiptForm({ nextFn }: ReceiptFormProps) {
   const { receiptData, setReceiptData } = useAppState();
+  const [errorMessage, setErrorMessage] = useState("");
 
   return (
     <StageContainer
@@ -16,9 +19,11 @@ export default function ReceiptForm({ nextFn }: ReceiptFormProps) {
       }}
       nextCondition={!!receiptData}
     >
-      <span className="title">Receipt</span>
-
       <div className="file-form">
+        <span className="title">File Upload</span>
+        <span className="instructions">
+          Upload a JSON file containing the receipt.
+        </span>
         <input
           className="file-input"
           type="file"
@@ -27,13 +32,15 @@ export default function ReceiptForm({ nextFn }: ReceiptFormProps) {
             const inputFile = e.target.files?.[0];
             if (!inputFile) return;
             if (inputFile.type !== "application/json") {
-              alert("Uploaded file must be of JSON format");
+              setReceiptData(undefined);
+              setErrorMessage("Uploaded file must be of JSON format");
               return;
             }
             const content = await inputFile.text();
             const receiptDataOption = parseReceipt(content);
             if (!receiptDataOption.success) {
-              alert(receiptDataOption.message);
+              setReceiptData(undefined);
+              setErrorMessage(receiptDataOption.message);
               return;
             }
 
@@ -43,13 +50,27 @@ export default function ReceiptForm({ nextFn }: ReceiptFormProps) {
               index,
             }));
             setReceiptData({ items: uniqueItems });
+            setErrorMessage("");
           }}
         />
-      </div>
 
-      {receiptData && (
-        <span className="message">{`Detected a receipt for ${receiptData.items.length} items`}</span>
-      )}
+        {errorMessage && (
+          <div
+            className={cn("message", {
+              success: !!receiptData,
+              error: !receiptData,
+            })}
+          >
+            {errorMessage}
+          </div>
+        )}
+
+        {receiptData && (
+          <div className="message success">
+            {`Detected a receipt for ${receiptData.items.length} items`}
+          </div>
+        )}
+      </div>
     </StageContainer>
   );
 }

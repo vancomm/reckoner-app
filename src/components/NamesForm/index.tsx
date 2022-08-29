@@ -11,17 +11,18 @@ interface NamesFormProps {
 interface NameFormProps {
   index: number;
   name: string;
+  invalid?: boolean;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
 }
 
-function NameForm({ index, name, onChange }: NameFormProps) {
+function NameForm({ index, name, onChange, invalid = false }: NameFormProps) {
   return (
     <div className={cn("name-form")}>
       <input
         key={`name-input-${index}`}
         id={`name-input-${index}`}
         type="text"
-        className="name-input"
+        className={cn("name-input", { invalid, filled: !!name })}
         value={name}
         placeholder="Enter name..."
         onClick={() => {
@@ -35,7 +36,7 @@ function NameForm({ index, name, onChange }: NameFormProps) {
           }
         }}
       />
-      <button
+      {/* <button
         className="cross-in-circle-btn"
         type="reset"
         onClick={(e) => {
@@ -45,7 +46,7 @@ function NameForm({ index, name, onChange }: NameFormProps) {
         }}
       >
         <CrossInCircleIcon width="1em" height="1em" />
-      </button>
+      </button> */}
     </div>
   );
 }
@@ -65,7 +66,7 @@ export default function NamesForm({ backFn, nextFn }: NamesFormProps) {
       }}
       nextCondition={names.length > 0}
     >
-      <span className="title">Users</span>
+      <span className="title">User Names</span>
 
       <div className="names-form">
         {names.concat("").map((name, index) => (
