@@ -18,7 +18,7 @@ interface StateInterface {
 
 const AppStateContext = createContext<StateInterface>({} as StateInterface);
 
-const initNames = ["Vanya", "Sanya"]; // debugging purposes only
+// const debugNames = ["Vanya", "Sanya"]; // debugging purposes only
 
 const initResult = {};
 
@@ -27,7 +27,7 @@ interface StateProviderProps {
 }
 
 export function StateProvider({ children }: StateProviderProps) {
-  const [names, setNames] = useState(initNames);
+  const [names, setNames] = useState<string[]>([]);
   const [receiptData, setReceiptData] = useState<ReceiptData>();
   const [result, setResult] = useState<Result>(initResult);
 
@@ -54,6 +54,19 @@ export function StateProvider({ children }: StateProviderProps) {
     }),
     [names, receiptData, result]
   );
+
+  // const init = async () => {
+  //   const cachedNames = await get("names");
+  //   if (!isSuccessful(cachedNames)) {
+  //     setNames(debugNames);
+  //     return;
+  //   }
+  //   setNames(cachedNames.value);
+  // };
+
+  // useEffect(() => {
+  //   init();
+  // }, []);
 
   return (
     <AppStateContext.Provider value={value}>

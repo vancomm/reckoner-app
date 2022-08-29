@@ -1,3 +1,4 @@
+import cn from "classnames";
 import { useAppState } from "../../contexts/AppStateContext";
 import StageContainer from "../StageContainer";
 
@@ -29,13 +30,16 @@ export default function ItemsForm({ backFn, nextFn }: ItemsFormProps) {
       <span className="title">Items</span>
       <ul className="items">
         {items.map(({ index, ...item }) => (
-          <li id={`item-${index}`} key={`item-${index}`} className="item">
+          <li
+            id={`item-${index}`}
+            key={`item-${index}`}
+            className={cn("item", { filled: !!(result[index]?.length > 0) })}
+          >
             <div className="item-details">
-              <span className="item-name">{item.name.toLowerCase()}</span>
-              <br />
-              <span className="item-price">{item.price / 100}</span>
-              {" × "}
-              <span className="item-qty">{item.quantity}</span>
+              <div className="item-name">{item.name.toLowerCase()}</div>
+              <span className="item-detail">{item.price / 100}</span>
+              <span>{" × "}</span>
+              <span className="item-detail">{item.quantity}</span>
             </div>
             <ul id="item-names" className="item-names">
               {names.map((name, i) => (

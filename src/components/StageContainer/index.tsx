@@ -1,3 +1,5 @@
+import cn from "classnames";
+
 interface CustomButton {
   label: string;
   onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => any;
@@ -10,6 +12,7 @@ interface StageContainerProps {
   handleNext?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => any;
   nextCondition?: boolean;
   customButtons?: CustomButton[];
+  className?: string;
   children?: React.ReactNode;
 }
 
@@ -18,10 +21,11 @@ export default function StageContainer({
   handleNext,
   nextCondition = true,
   customButtons,
+  className,
   children,
 }: StageContainerProps) {
   return (
-    <div className="container">
+    <div className={cn("container", className)}>
       {children}
       <div className="btn-container">
         {handleBack && (

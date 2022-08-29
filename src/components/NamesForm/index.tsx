@@ -1,4 +1,6 @@
+import cn from "classnames";
 import { useAppState } from "../../contexts/AppStateContext";
+import CrossInCircleIcon from "../CrossInCircleIcon";
 import StageContainer from "../StageContainer";
 
 interface NamesFormProps {
@@ -14,21 +16,37 @@ interface NameFormProps {
 
 function NameForm({ index, name, onChange }: NameFormProps) {
   return (
-    <input
-      key={`user-input-${index}`}
-      id={`user-input-${index}`}
-      type="text"
-      className="user-input"
-      value={name}
-      placeholder="Enter name..."
-      onChange={onChange}
-      onKeyDown={(e) => {
-        if (e.key === "Enter") {
-          const next = e.currentTarget.nextElementSibling as HTMLElement;
-          next.focus(); // this triggers button click when button is next; call event.preventDefault in button handler to prevent this
-        }
-      }}
-    />
+    <div className={cn("name-form")}>
+      <input
+        key={`name-input-${index}`}
+        id={`name-input-${index}`}
+        type="text"
+        className="name-input"
+        value={name}
+        placeholder="Enter name..."
+        onClick={() => {
+          console.count("click on input");
+        }}
+        onChange={onChange}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            const next = e.currentTarget.nextElementSibling as HTMLElement;
+            next.focus(); // this triggers button click when button is next; call event.preventDefault in button handler to prevent this
+          }
+        }}
+      />
+      <button
+        className="cross-in-circle-btn"
+        type="reset"
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          console.count("click on button");
+        }}
+      >
+        <CrossInCircleIcon width="1em" height="1em" />
+      </button>
+    </div>
   );
 }
 
@@ -49,10 +67,10 @@ export default function NamesForm({ backFn, nextFn }: NamesFormProps) {
     >
       <span className="title">Users</span>
 
-      <div className="user-form">
+      <div className="names-form">
         {names.concat("").map((name, index) => (
           <NameForm
-            key={`user-input-${index}`}
+            key={`name-form-${index}`}
             name={name}
             index={index}
             onChange={(e) => {
@@ -66,35 +84,6 @@ export default function NamesForm({ backFn, nextFn }: NamesFormProps) {
               );
             }}
           />
-          // <input
-          //   key={`user-input-${index}`}
-          //   id={`user-input-${index}`}
-          //   type="text"
-          //   className="user-input"
-          //   value={name}
-          //   placeholder="Enter name..."
-          //   onChange={(e) => {
-          //     const { value } = e.target;
-          //     setNames((state) =>
-          //       state.map((v, i) => (i === index ? value : v))
-          //     );
-          //     if (index === names.length - 1) {
-          //       setNames((state) => [...state, ""]);
-          //     }
-          //   }}
-          //   onKeyDown={(e) => {
-          //     if (e.key === "Enter") {
-          //       const next = e.currentTarget.nextElementSibling as HTMLElement;
-          //       next.focus(); // this triggers button click when button is next; call event.preventDefault in button handler to prevent this
-          //     }
-          //   }}
-          //   onBlur={(e) => {
-          //     const { value } = e.target;
-          //     if (value === "" && index !== names.length - 1) {
-          //       setNames((state) => state.filter((_, i) => i !== index));
-          //     }
-          //   }}
-          // />
         ))}
       </div>
     </StageContainer>

@@ -8,7 +8,7 @@ const version = 1;
 const hoursUntilStale = -1;
 
 export interface CacheKeyMap {
-  names: string;
+  names: string[];
 }
 
 export type CacheKey = keyof CacheKeyMap;
@@ -24,6 +24,8 @@ async function get<K extends keyof CacheKeyMap, T extends CacheKeyMap[K]>(
     await del(key);
     return makeFailed("Cache version outdated");
   }
+
+  if (hoursUntilStale < 0) return makeSuccessful(value.data);
 
   const now = new Date();
   const staleTime = addHours(value.date, hoursUntilStale);
