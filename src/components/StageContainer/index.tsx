@@ -1,4 +1,4 @@
-import cn from "classnames";
+import cn, { Argument } from "classnames";
 
 interface CustomButton {
   label: string;
@@ -12,7 +12,7 @@ interface StageContainerProps {
   handleNext?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => any;
   nextCondition?: boolean;
   customButtons?: CustomButton[];
-  className?: string;
+  className?: Argument;
   children?: React.ReactNode;
 }
 

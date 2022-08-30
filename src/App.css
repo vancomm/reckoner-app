@@ -56,10 +56,6 @@
   opacity: 1;
 }
 
-.invalid {
-  border: 1px solid red;
-}
-
 .app {
   min-height: 100vh;
   padding: 30px;
@@ -88,111 +84,7 @@
   margin-top: 0.2rem;
 }
 
-.names-form {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-}
 
-.name-form {
-  width: 100%;
-  position: relative;
-  font-size: 0.9rem;
-  border: none;
-  background-color: var(--bg-overlay);
-  border-radius: 4px;
-  transition: background 100ms ease-in;
-  color: var(--color-secondary);  
-  overflow: hidden;
-}
-
-.name-form .name-input {
-  color: var(--color-primary) !important; 
-}
-
-.name-input {
-  width: 100%;
-  padding: .3em 24px 0 .3em;
-  background-color: var(--bg-overlay);
-  opacity: 0.5;
-  border: none;
-  font-size: 1rem;
-  /* padding-top: 5px;
-  padding-left: 5px; 
-  padding-right: 24px; */
-}
-
-.name-input * {
-  opacity: 1;
-}
-
-.name-input::placeholder {
-  opacity: 1;
-}
-
-.name-input:hover {
-  background-color: var(--bg-overlay-hover) !important;
-  opacity: 0.75;
-}
-
-.name-input:focus {
-  outline: none;
-  opacity: 1;
-  background-color: var(--bg-overlay-active);
-}
-
-.cross-in-circle {
-  padding: 0 .1em 0 .1em;
-  margin: 0;
-}
-
-.cross-in-circle-btn {
-  visibility: hidden;
-  display: grid;
-  margin-left: -24px;
-  height: 100%;
-  aspect-ratio: 1;
-  position: absolute;
-  padding: 0 !important;
-  top: 50%;
-  right: 0;
-  z-index: 200;
-  place-items: center;
-  fill: var(--bg-input-btn);
-  transform: translateY(-50%);
-  background: none !important;
-}
-
-:focus + .cross-in-circle-btn,
-.cross-in-circle-btn:hover {
-  visibility: visible;
-}
-
-.cross-in-circle-btn:hover {
-  filter: brightness(150%);
-}
-
-.cross-in-circle-btn:active {
-  filter: brightness(200%);
-}
-
-.file-input {
-  width: 100%;
-  font-size: inherit;
-}
-
-.file-form .instructions {
-  /* font-size: 1rem; */
-}
-
-.file-form .message {
-  padding: 0.5em 0.5em 0.3em;
-  border-radius: .3em;
-  text-align: center;
-  font-size: inherit;
-}
 
 .btn-container {
   display: flex;
@@ -248,14 +140,6 @@
   background-color: var(--green);
 }
 
-.file-form {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-}
-
 .notification {
   background: var(--bg-container);
   padding: 0.5rem 0.3rem 0.3rem 0.5rem;
@@ -263,112 +147,6 @@
   font-size: smaller;
   text-align: center;
   color: white;
-}
-
-.items {
-  width: 100%;
-  padding: 0;
-  margin: 0;
-  list-style-type: none;
-}
-
-.item-container {
-  display: flex;
-}
-
-.item-container:not(:last-child) {
-  margin-bottom: 10px;
-}
-
-.item-actions {
-  padding-left: .5em;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  row-gap: 0.5em;
-}
-
-.item-actions * {
-  cursor: pointer;
-  font: 1rem monospace;
-  width: 2em;
-  aspect-ratio: 1;
-  background-color: var(--bg-overlay);
-  opacity: 0.8;
-  border: none;
-  border-radius: 50%;
-}
-
-.item-actions *:hover {
-  background-color: var(--bg-overlay-hover);
-  opacity: 0.9;
-}
-
-.item-actions *:active {
-  background-color: var(--bg-overlay-active);
-  opacity: 1;
-}
-
-.item {
-  flex: 1 1 auto;
-  background-color: var(--bg-overlay);
-  padding: .8em;
-  border-radius: .4em;
-  display: flex;
-  flex-direction: column;
-  row-gap: 1em;
-  transition: all 250ms;
-}
-
-.item-details span{
-  font: 0.9rem monospace;
-  opacity: 0.6;
-}
-
-.success .item-details span {
-  opacity: 1;
-}
-
-.item-details .item-name {
-  font-size: 1.2rem;
-}
-
-.item-names {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  margin-top: .3em;
-  display: flex;
-  flex-wrap: wrap;
-  /* justify-content: space-evenly; */
-  column-gap: .5em;
-  row-gap: .5em;
-}
-
-.item-names-input {
-  display: none;
-}
-
-.item-names-label {
-  cursor: pointer;
-  user-select: none;
-  padding: 0.3em 0.3em 0.2em;
-  background-color: var(--bg-overlay);
-  border-radius: 0.3em;
-  transition: all 100ms;
-  opacity: 0.5;
-}
-
-.item-names-label:hover {
-  background-color: var(--bg-overlay-hover);
-  opacity: 0.9;
-}
-
-:checked + .item-names-label{
-  background-color: rgba(255, 255, 255);
-  color: #333;
-  opacity: 1;
 }
 
 hr {

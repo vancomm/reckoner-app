@@ -2,9 +2,9 @@ import { useState } from "react";
 
 import { useAppState } from "./contexts/AppStateContext";
 
-import ReceiptForm from "./components/ReceiptForm";
-import NamesForm from "./components/NamesForm";
-import ItemsForm from "./components/ItemsForm";
+import ReceiptStage from "./components/ReceiptStage";
+import NamesStage from "./components/NamesStage";
+import ItemsStage from "./components/ItemsStage";
 import Results from "./components/Results";
 
 import "./App.css";
@@ -19,17 +19,17 @@ export default function App() {
 
   return (
     <div className="app bg-gradient">
-      {stage === "receipt" && <ReceiptForm nextFn={() => setStage("names")} />}
+      {stage === "receipt" && <ReceiptStage nextFn={() => setStage("names")} />}
 
       {stage === "names" && (
-        <NamesForm
+        <NamesStage
           backFn={() => setStage("receipt")}
           nextFn={() => setStage("items")}
         />
       )}
 
       {stage === "items" && receiptData && names && (
-        <ItemsForm
+        <ItemsStage
           backFn={() => setStage("names")}
           nextFn={() => setStage("results")}
         />

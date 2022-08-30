@@ -1,4 +1,6 @@
-import { createContext, useState, useMemo, useContext } from "react";
+import { createContext, useState, useMemo, useContext, useEffect } from "react";
+import { get, set } from "../helpers/cacheHelper";
+import { isSuccessful } from "../utils/Optional";
 import { UniqueItem } from "../utils/parseReceiptDocument";
 
 export interface ReceiptData {
@@ -7,7 +9,7 @@ export interface ReceiptData {
 
 export type Result = Record<string, string[]>;
 
-interface StateInterface {
+interface AppStateInterface {
   names: string[];
   setNames: React.Dispatch<React.SetStateAction<string[]>>;
   receiptData?: ReceiptData;
@@ -16,9 +18,9 @@ interface StateInterface {
   setResult: React.Dispatch<React.SetStateAction<Result>>;
 }
 
-const AppStateContext = createContext<StateInterface>({} as StateInterface);
-
-// const debugNames = ["Vanya", "Sanya"]; // debugging purposes only
+const AppStateContext = createContext<AppStateInterface>(
+  {} as AppStateInterface
+);
 
 const initResult = {};
 
@@ -26,7 +28,9 @@ interface StateProviderProps {
   children: React.ReactNode;
 }
 
-export function StateProvider({ children }: StateProviderProps) {
+export function AppStateProvider({ children }: StateProviderProps) {
+  const [initialized, setInitialized] = useState(false);
+
   const [names, setNames] = useState<string[]>([]);
   const [receiptData, setReceiptData] = useState<ReceiptData>();
   const [result, setResult] = useState<Result>(initResult);
@@ -55,18 +59,18 @@ export function StateProvider({ children }: StateProviderProps) {
     [names, receiptData, result]
   );
 
-  // const init = async () => {
-  //   const cachedNames = await get("names");
-  //   if (!isSuccessful(cachedNames)) {
-  //     setNames(debugNames);
-  //     return;
-  //   }
-  //   setNames(cachedNames.value);
-  // };
+  const init = async () => {
+    const cachedNames = await get("names");
+    if (isSuccessful(cachedNames)) setNames(cachedNames.value);
+  };
 
-  // useEffect(() => {
-  //   init();
-  // }, []);
+  useEffect(() => {
+    init().then(() => setInitialized(true));
+  }, []);
+
+  useEffect(() => {
+    if (initialized) set("names", names); // otherwise dafault value [] overwrites cache
+  }, [initialized, names]);
 
   return (
     <AppStateContext.Provider value={value}>

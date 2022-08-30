@@ -1,16 +1,18 @@
-import cn from "classnames";
 import { useState } from "react";
+import cn from "classnames";
 import { useAppState } from "../../contexts/AppStateContext";
-import parseReceipt, { UniqueItem } from "../../utils/parseReceiptDocument";
 import StageContainer from "../StageContainer";
+import parseReceipt, { UniqueItem } from "../../utils/parseReceiptDocument";
+import styles from "./ReceiptStage.module.css";
 
-interface ReceiptFormProps {
+interface ReceiptStageProps {
   nextFn: () => void;
 }
 
-export default function ReceiptForm({ nextFn }: ReceiptFormProps) {
-  const { receiptData, setReceiptData } = useAppState();
+export default function ReceiptStage({ nextFn }: ReceiptStageProps) {
   const [errorMessage, setErrorMessage] = useState("");
+
+  const { receiptData, setReceiptData } = useAppState();
 
   return (
     <StageContainer
@@ -19,13 +21,11 @@ export default function ReceiptForm({ nextFn }: ReceiptFormProps) {
       }}
       nextCondition={!!receiptData}
     >
-      <div className="file-form">
+      <div className={styles.fileForm}>
         <span className="title">File Upload</span>
-        <span className="instructions">
-          Upload a JSON file containing the receipt.
-        </span>
+        <span>Upload a JSON file containing the receipt.</span>
         <input
-          className="file-input"
+          className={styles.fileInput}
           type="file"
           accept="application/json"
           onChange={async (e) => {
@@ -54,20 +54,16 @@ export default function ReceiptForm({ nextFn }: ReceiptFormProps) {
           }}
         />
 
-        {errorMessage && (
+        {(errorMessage || receiptData) && (
           <div
-            className={cn("message", {
+            className={cn(styles.message, {
               success: !!receiptData,
               error: !receiptData,
             })}
           >
-            {errorMessage}
-          </div>
-        )}
-
-        {receiptData && (
-          <div className="message success">
-            {`Detected a receipt for ${receiptData.items.length} items`}
+            {errorMessage ||
+              (receiptData &&
+                `Detected a receipt for ${receiptData.items.length} items`)}
           </div>
         )}
       </div>
