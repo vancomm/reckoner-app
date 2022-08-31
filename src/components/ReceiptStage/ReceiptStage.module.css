@@ -17,3 +17,13 @@
   text-align: center;
   font-size: inherit;
 }
+
+.success.message {
+  background-color: var(--bg-success);
+  color: var(--color-success);
+}
+
+.error.message {
+  background-color: var(--bg-error);
+  color: var(--color-error);
+}

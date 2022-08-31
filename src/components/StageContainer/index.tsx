@@ -1,17 +1,19 @@
 import cn, { Argument } from "classnames";
+import { Nestable } from "../../types/Nestable";
+import styles from "./StageContainer.module.css";
 
-interface CustomButton {
+interface CustomControl {
   label: string;
-  onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => any;
-  disabled?: boolean;
   className?: string;
+  disabled?: boolean;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => any;
 }
 
 interface StageContainerProps {
   handleBack?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => any;
   handleNext?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => any;
   nextCondition?: boolean;
-  customButtons?: CustomButton[];
+  customControls?: CustomControl[];
   className?: Argument;
   children?: React.ReactNode;
 }
@@ -20,33 +22,33 @@ export default function StageContainer({
   handleBack,
   handleNext,
   nextCondition = true,
-  customButtons,
+  customControls,
   className,
   children,
 }: StageContainerProps) {
   return (
-    <div className={cn("container", className)}>
+    <div className={cn(styles.container, className)}>
       {children}
-      <div className="btn-container">
+      <div className={styles.buttonContainer}>
         {handleBack && (
-          <button className="back-btn" onClick={handleBack}>
+          <button className={styles.button} onClick={handleBack}>
             Back
           </button>
         )}
         {handleNext && (
           <button
-            className="next-btn"
+            className={cn(styles.button, styles.next)}
             disabled={!nextCondition}
             onClick={handleNext}
           >
             Next
           </button>
         )}
-        {customButtons?.map(
+        {customControls?.map(
           ({ label, disabled, onClick, className }, index) => (
             <button
               key={index}
-              className={className}
+              className={cn(styles.button, className)}
               onClick={onClick}
               disabled={disabled}
             >
@@ -58,3 +60,9 @@ export default function StageContainer({
     </div>
   );
 }
+
+function Title({ children }: Nestable) {
+  return <span className={styles.title}>{children}</span>;
+}
+
+StageContainer.Title = Title;

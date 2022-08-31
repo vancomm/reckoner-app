@@ -28,7 +28,7 @@ export default function NamesStage({ backFn, nextFn }: NamesStageProps) {
           names.map((n) => n.trim()).length
       }
     >
-      <span className="title">User Names</span>
+      <StageContainer.Title>User Names</StageContainer.Title>
 
       <div className={styles.namesForm}>
         {names.concat("").map((name, index) => (

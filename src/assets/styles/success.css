@@ -1,0 +1,8 @@
+:root {
+  --bg-success: rgba(166, 233, 161, 0.8);
+  --bg-success-secondary: rgb(166, 233, 161, 0.6);
+  --color-success: #333;
+
+  --bg-error: rgb(247, 177, 177);
+  --color-error: rgb(124, 8, 8);
+}

@@ -1,21 +1,17 @@
 import cn from "classnames";
+
 import StageContainer from "../StageContainer";
+import Card, {
+  CardContainer,
+  CardActions,
+  Button,
+  Toggle,
+  CardProps,
+} from "../Card";
+
 import { useAppState } from "../../contexts/AppStateContext";
 import { UniqueItem } from "../../utils/parseReceiptDocument";
 import styles from "./ItemsStage.module.css";
-
-interface ItemActionProps {
-  label: string;
-  onClick: React.MouseEventHandler<HTMLButtonElement>;
-}
-
-function ItemAction({ label, onClick }: ItemActionProps) {
-  return (
-    <button className={styles.itemAction} onClick={onClick}>
-      <div>{label}</div>
-    </button>
-  );
-}
 
 interface NamePickerProps {
   names: string[];
@@ -26,65 +22,49 @@ interface NamePickerProps {
 
 function NamePicker({ names, index, checkedFn, onChangeFn }: NamePickerProps) {
   return (
-    <ul className={styles.itemNames}>
+    <div className={styles.namePicker}>
       {names.map((name, i) => (
-        <li key={`item-${index}-name-${i}`}>
-          <input
-            id={`item-${index}-input-${name}`}
-            className={styles.itemNamesInput}
-            type="checkbox"
-            value={name}
-            checked={checkedFn(name)}
-            onChange={onChangeFn(name)}
-          />
-          <label
-            className={styles.itemNamesLabel}
-            htmlFor={`item-${index}-input-${name}`}
-          >
-            {name}
-          </label>
-        </li>
+        <Toggle
+          key={`item-${index}-name-${i}`}
+          id={`item-${index}-input-${name}`}
+          className={styles.nameLabel}
+          label={name}
+          active={checkedFn(name)}
+          onClick={onChangeFn(name)}
+        />
       ))}
-    </ul>
-  );
-}
-
-interface ItemCardProps {
-  item: UniqueItem;
-  filled?: boolean;
-  children?: React.ReactNode;
-}
-
-function ItemCard({ item, filled, children }: ItemCardProps) {
-  const { index } = item;
-
-  return (
-    <div
-      id={`item-${index}`}
-      className={cn(styles.itemCard, {
-        success: filled,
-      })}
-    >
-      <div className={styles.itemDetails}>
-        <div className={styles.itemTitle}>{item.name.toLowerCase()}</div>
-        <span>
-          {item.price / 100}
-          {" × "}
-          {item.quantity}
-        </span>
-      </div>
-
-      {children}
     </div>
   );
 }
 
-interface ItemsFormProps {
+interface ItemCardProps extends CardProps {
+  item: UniqueItem;
+}
+
+function ItemCard({ item, children }: ItemCardProps) {
+  const { index, name, price, quantity } = item;
+
+  return (
+    <Card id={`item-${index}`} className={styles.itemCard}>
+      <Card.Title className={styles.itemTitle}>
+        {name.toLowerCase()}
+
+        <Card.Subtitle className={styles.itemSubtitle}>
+          {`${price / 100} × ${quantity}`}
+        </Card.Subtitle>
+      </Card.Title>
+
+      {children}
+    </Card>
+  );
+}
+
+interface ItemsStageProps {
   backFn: () => void;
   nextFn: () => void;
 }
 
-export default function ItemsStage({ backFn, nextFn }: ItemsFormProps) {
+export default function ItemsStage({ backFn, nextFn }: ItemsStageProps) {
   const { names, receiptData, result, setResult } = useAppState();
 
   if (!names || !receiptData) return null;
@@ -104,14 +84,21 @@ export default function ItemsStage({ backFn, nextFn }: ItemsFormProps) {
         Object.values(result).every(({ length }) => length > 0)
       }
     >
-      <span className="title">Items</span>
+      <StageContainer.Title>Items</StageContainer.Title>
 
-      <ul className={styles.items}>
+      <div className={styles.items}>
         {items.map((item) => {
           const { index } = item;
+
           return (
-            <li key={`item-${index}`} className={styles.itemContainer}>
-              <ItemCard item={item} filled={!!(result[index]?.length > 0)}>
+            <CardContainer
+              key={`item-${index}`}
+              className={cn(styles.itemContainer, {
+                [styles.success]: !!(result[index]?.length > 0),
+                [styles.double]: item.quantity === 2,
+              })}
+            >
+              <ItemCard item={item}>
                 <NamePicker
                   names={names}
                   index={index}
@@ -129,9 +116,10 @@ export default function ItemsStage({ backFn, nextFn }: ItemsFormProps) {
                 />
               </ItemCard>
 
-              <div className={styles.itemActions}>
-                <ItemAction
-                  label="¬"
+              <CardActions className={styles.itemCardActions}>
+                <Button
+                  className={styles.itemCardAction}
+                  label="invert"
                   onClick={() => {
                     setResult((state) => {
                       const prev = state[index] ?? [];
@@ -140,8 +128,9 @@ export default function ItemsStage({ backFn, nextFn }: ItemsFormProps) {
                     });
                   }}
                 />
-                <ItemAction
-                  label="∀"
+                <Button
+                  className={styles.itemCardAction}
+                  label="all"
                   onClick={() => {
                     setResult((state) => {
                       const prev = state[index] ?? [];
@@ -150,11 +139,11 @@ export default function ItemsStage({ backFn, nextFn }: ItemsFormProps) {
                     });
                   }}
                 />
-              </div>
-            </li>
+              </CardActions>
+            </CardContainer>
           );
         })}
-      </ul>
+      </div>
     </StageContainer>
   );
 }

@@ -1,99 +1,57 @@
 .items {
   width: 100%;
-  padding: 0;
-  margin: 0;
-  list-style-type: none;
-}
-
-.itemContainer {
-  display: flex;
-}
-
-.itemContainer:not(:last-child) {
-  margin-bottom: 10px;
-}
-
-.itemCard {
-  padding: .8em;
   display: flex;
   flex-direction: column;
-  row-gap: 1em;
-  flex: 1 1 auto;
-  background-color: var(--bg-overlay);
-  border-radius: .4em;
-  transition: all 250ms;
-}
-
-.itemDetails span {
-  font: 0.9rem monospace;
-  opacity: 0.6;
+  gap: 15px;
 }
 
 .itemTitle {
   font-size: 1.2rem;
 }
 
-.itemNames {
-  padding: 0;
-  margin: 0;
-  margin-top: .3em;
+.itemSubtitle {
+  font-family: monospace;
+}
+
+.namePicker {
+  /* height: min-content; */
+  margin-top: 1em;
   display: flex;
   flex-wrap: wrap;
   column-gap: .5em;
   row-gap: .8em;
-  list-style-type: none;
 }
 
-.itemNamesInput {
-  display: none;
-}
-
-.itemNamesLabel {
-  cursor: pointer;
-  user-select: none;
-  padding: 0.3em 0.3em 0.2em;
+.namePicker .nameLabel {
   background-color: var(--bg-overlay);
-  border-radius: 0.3em;
-  transition: all 100ms;
 }
 
-.itemNamesLabel:hover {
+.nameLabel:hover {
   background-color: var(--bg-overlay-hover);
 }
 
-:checked~.itemNamesLabel {
-  background-color: rgba(255, 255, 255);
-  color: #333;
+.itemCardActions .itemCardAction:hover {
+  opacity: 1;
 }
 
-.itemActions {
-  padding-left: .5em;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  row-gap: 0.5em;
+
+.success.itemContainer {
+  background-color: var(--bg-success-secondary);
 }
 
-.itemAction {
-  cursor: pointer;
-  width: 2.5em;
-  aspect-ratio: 1;
-  background-color: var(--bg-overlay);
-  border: none;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
+.success .itemCard {
+  background-color: var(--bg-success);
 }
 
-.itemAction:hover {
-  background-color: var(--bg-overlay-hover);
+.success .itemCard * {
+  color: var(--color-success);
 }
 
-.itemAction:active {
-  background-color: var(--bg-overlay-active);
+.success .itemCardAction {
+  color: var(--color-success);
+  opacity: 0.8;
 }
 
-.itemAction * {
-  font: 1rem monospace;
-}
+/* .success :not(:checked)~.nameLabel {
+  color: var(--color-primary);
+} */

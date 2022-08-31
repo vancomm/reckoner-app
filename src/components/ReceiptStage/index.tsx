@@ -22,7 +22,7 @@ export default function ReceiptStage({ nextFn }: ReceiptStageProps) {
       nextCondition={!!receiptData}
     >
       <div className={styles.fileForm}>
-        <span className="title">File Upload</span>
+        <StageContainer.Title>File Upload</StageContainer.Title>
         <span>Upload a JSON file containing the receipt.</span>
         <input
           className={styles.fileInput}
@@ -57,8 +57,8 @@ export default function ReceiptStage({ nextFn }: ReceiptStageProps) {
         {(errorMessage || receiptData) && (
           <div
             className={cn(styles.message, {
-              success: !!receiptData,
-              error: !receiptData,
+              [styles.success]: !!receiptData,
+              [styles.error]: !receiptData,
             })}
           >
             {errorMessage ||

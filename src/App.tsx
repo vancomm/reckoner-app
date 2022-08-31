@@ -5,7 +5,7 @@ import { useAppState } from "./contexts/AppStateContext";
 import ReceiptStage from "./components/ReceiptStage";
 import NamesStage from "./components/NamesStage";
 import ItemsStage from "./components/ItemsStage";
-import Results from "./components/Results";
+import ResultsStage from "./components/ResultsStage";
 
 import "./App.css";
 
@@ -36,7 +36,7 @@ export default function App() {
       )}
 
       {stage === "results" && result && (
-        <Results
+        <ResultsStage
           backFn={() => setStage("items")}
           againFn={() => setStage("receipt")}
         />
