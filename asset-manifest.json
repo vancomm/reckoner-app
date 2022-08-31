@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/reckoner-app/static/css/main.69b5fe2a.css",
-    "main.js": "/reckoner-app/static/js/main.03741319.js",
+    "main.css": "/reckoner-app/static/css/main.8b355f35.css",
+    "main.js": "/reckoner-app/static/js/main.671ed8dc.js",
     "static/js/787.d84f24ea.chunk.js": "/reckoner-app/static/js/787.d84f24ea.chunk.js",
     "static/media/cross-in-circle.svg": "/reckoner-app/static/media/cross-in-circle.e7b202bcbc0f9d85650d3d490ef0cf3d.svg",
     "index.html": "/reckoner-app/index.html",
-    "main.69b5fe2a.css.map": "/reckoner-app/static/css/main.69b5fe2a.css.map",
-    "main.03741319.js.map": "/reckoner-app/static/js/main.03741319.js.map",
+    "main.8b355f35.css.map": "/reckoner-app/static/css/main.8b355f35.css.map",
+    "main.671ed8dc.js.map": "/reckoner-app/static/js/main.671ed8dc.js.map",
     "787.d84f24ea.chunk.js.map": "/reckoner-app/static/js/787.d84f24ea.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.69b5fe2a.css",
-    "static/js/main.03741319.js"
+    "static/css/main.8b355f35.css",
+    "static/js/main.671ed8dc.js"
   ]
 }
