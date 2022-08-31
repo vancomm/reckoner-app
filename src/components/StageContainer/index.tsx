@@ -1,10 +1,10 @@
 import cn, { Argument } from "classnames";
+import { Customizable } from "../../types/Customizable";
 import { Nestable } from "../../types/Nestable";
 import styles from "./StageContainer.module.css";
 
-interface CustomControl {
+interface CustomControl extends Customizable {
   label: string;
-  className?: string;
   disabled?: boolean;
   onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => any;
 }
@@ -45,12 +45,13 @@ export default function StageContainer({
           </button>
         )}
         {customControls?.map(
-          ({ label, disabled, onClick, className }, index) => (
+          ({ label, disabled, onClick, className, style }, index) => (
             <button
               key={index}
               className={cn(styles.button, className)}
               onClick={onClick}
               disabled={disabled}
+              style={style}
             >
               {label}
             </button>

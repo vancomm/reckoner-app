@@ -3,7 +3,9 @@ import cn from "classnames";
 import { useAppState } from "../../contexts/AppStateContext";
 import StageContainer from "../StageContainer";
 import parseReceipt, { UniqueItem } from "../../utils/parseReceiptDocument";
+import testfile from "../../data/test-file.json";
 import styles from "./ReceiptStage.module.css";
+import { isSuccessful } from "../../utils/Optional";
 
 interface ReceiptStageProps {
   nextFn: () => void;
@@ -20,10 +22,20 @@ export default function ReceiptStage({ nextFn }: ReceiptStageProps) {
         nextFn();
       }}
       nextCondition={!!receiptData}
+      customControls={[
+        {
+          label: "Load test data",
+          onClick: () => {
+            const opt = parseReceipt(JSON.stringify(testfile));
+            if (isSuccessful(opt)) setReceiptData(opt.value);
+          },
+          style: { order: -1 },
+        },
+      ]}
     >
+      <StageContainer.Title>File Upload</StageContainer.Title>
+      <span>Upload a JSON file with the receipt.</span>
       <div className={styles.fileForm}>
-        <StageContainer.Title>File Upload</StageContainer.Title>
-        <span>Upload a JSON file containing the receipt.</span>
         <input
           className={styles.fileInput}
           type="file"
@@ -53,20 +65,20 @@ export default function ReceiptStage({ nextFn }: ReceiptStageProps) {
             setErrorMessage("");
           }}
         />
-
-        {(errorMessage || receiptData) && (
-          <div
-            className={cn(styles.message, {
-              [styles.success]: !!receiptData,
-              [styles.error]: !receiptData,
-            })}
-          >
-            {errorMessage ||
-              (receiptData &&
-                `Detected a receipt for ${receiptData.items.length} items`)}
-          </div>
-        )}
       </div>
+
+      {(errorMessage || receiptData) && (
+        <div
+          className={cn(styles.message, {
+            [styles.success]: !!receiptData,
+            [styles.error]: !receiptData,
+          })}
+        >
+          {errorMessage ||
+            (receiptData &&
+              `Detected a receipt for ${receiptData.items.length} items`)}
+        </div>
+      )}
     </StageContainer>
   );
 }
