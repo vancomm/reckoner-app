@@ -1,3 +1,22 @@
+.optionsCard {
+  width: 100%;
+}
+
+.optionsTitle {
+  /* align-self: center; */
+}
+
+.optionsRows {
+  display: flex;
+  flex-direction: column;
+}
+
+.optionRow {
+  display: flex;
+  align-items: center;
+  gap: .5em;
+}
+
 .items {
   width: 100%;
   display: flex;
@@ -14,12 +33,10 @@
 }
 
 .namePicker {
-  /* height: min-content; */
   margin-top: 1em;
   display: flex;
   flex-wrap: wrap;
-  column-gap: .5em;
-  row-gap: .8em;
+  gap: .6em;
 }
 
 .namePicker .nameLabel {

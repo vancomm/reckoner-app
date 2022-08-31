@@ -12,6 +12,8 @@ import Card, {
 import { useAppState } from "../../contexts/AppStateContext";
 import { UniqueItem } from "../../utils/parseReceiptDocument";
 import styles from "./ItemsStage.module.css";
+import { useState } from "react";
+import range from "../../utils/range";
 
 interface NamePickerProps {
   names: string[];
@@ -64,12 +66,65 @@ interface ItemsStageProps {
   nextFn: () => void;
 }
 
+function mergeItems(items: UniqueItem[]): UniqueItem[] {
+  return items.slice().reduce((acc, curr) => {
+    const index = acc.findIndex((i) => i.name === curr.name);
+    if (index === -1) return [...acc, curr];
+    const prev = acc[index];
+    const next: UniqueItem = {
+      ...prev,
+      quantity: prev.quantity + curr.quantity,
+      sum: prev.sum + curr.sum,
+    };
+    return acc.map((v, i) => (i === index ? next : v));
+  }, [] as UniqueItem[]);
+}
+
+function spreadItems(items: UniqueItem[]): UniqueItem[] {
+  let offset = 0;
+  return items.reduce((acc, item, index) => {
+    if (item.quantity === 1 || !Number.isInteger(item.quantity)) {
+      const reindexed = { ...item, index: index + offset };
+      return [...acc, reindexed];
+    }
+    const duplicates = range(item.quantity).map((i) => ({
+      ...item,
+      index: index + offset + i,
+      quantity: 1,
+      sum: item.price,
+    }));
+    offset += item.quantity - 1;
+    return [...acc, ...duplicates];
+  }, [] as UniqueItem[]);
+}
+
+const mergeOptions = ["none", "merge", "spread"] as const;
+
+type MergeOption = typeof mergeOptions[number];
+
+function getMergeFunc(
+  option: MergeOption
+): (items: UniqueItem[]) => UniqueItem[] {
+  switch (option) {
+    case "none":
+      return (items) => items;
+    case "merge":
+      return mergeItems;
+    case "spread":
+      return spreadItems;
+  }
+}
+
 export default function ItemsStage({ backFn, nextFn }: ItemsStageProps) {
   const { names, receiptData, result, setResult } = useAppState();
+
+  const [merge, setMerge] = useState<MergeOption>("none");
 
   if (!names || !receiptData) return null;
 
   const { items } = receiptData;
+
+  const displayedItems = getMergeFunc(merge)(items);
 
   return (
     <StageContainer
@@ -80,14 +135,38 @@ export default function ItemsStage({ backFn, nextFn }: ItemsStageProps) {
         nextFn();
       }}
       nextCondition={
-        Object.keys(result).length === items.length &&
+        Object.keys(result).length === displayedItems.length &&
         Object.values(result).every(({ length }) => length > 0)
       }
     >
       <StageContainer.Title>Items</StageContainer.Title>
 
+      {false && ( // hidden
+        <Card className={styles.optionsCard}>
+          <Card.Title className={styles.optionsTitle}>Options</Card.Title>
+          <div className={styles.optionsToggles}>
+            <div className={styles.optionRow}>
+              <Toggle
+                id="merge-toggle"
+                active={merge !== "none"}
+                label={merge}
+                onClick={() =>
+                  setMerge((state) =>
+                    state === "none"
+                      ? "merge"
+                      : state === "merge"
+                      ? "spread"
+                      : "none"
+                  )
+                }
+              />
+            </div>
+          </div>
+        </Card>
+      )}
+
       <div className={styles.items}>
-        {items.map((item) => {
+        {displayedItems.map((item) => {
           const { index } = item;
 
           return (

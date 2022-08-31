@@ -70,6 +70,7 @@ export function Button({ id, label, onClick, className, style }: ButtonProps) {
 CardActions.Button = Button;
 
 interface ToggleProps extends Customizable {
+  id: string;
   active: boolean;
   label: string;
   onClick?: React.ChangeEventHandler<HTMLInputElement>;

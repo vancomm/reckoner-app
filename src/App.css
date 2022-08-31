@@ -3,13 +3,11 @@
 :root {
   --bg-start: rgb(8, 90, 198);
   --bg-end: rgb(0, 187, 255);
-  --bg-gradient: to bottom, var(--bg-start), var(--bg-end);
 
   --bg-overlay-active: rgba(0, 0, 0, 0.6);
   --bg-overlay-hover: rgba(0, 0, 0, 0.4);
   --bg-overlay: rgba(0, 0, 0, 0.3);
   --bg-overlay-light: rgba(0, 0, 0, 0.15);
-  --bg-container: rgba(19, 19, 19, 0.5);
 
   --color-primary: white;
 
@@ -23,17 +21,6 @@
   color: var(--color-primary);
 }
 
-.bg-gradient {
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-attachment: fixed;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-image: -webkit-linear-gradient(var(--bg-gradient));
-  background-image: linear-gradient(var(--bg-gradient));
-}
-
 .app {
   min-height: 100vh;
   padding: 20px;
@@ -41,6 +28,7 @@
   flex-direction: column;
   align-items: center;
   gap: 20px;
+  background: no-repeat fixed center/cover linear-gradient(to bottom, var(--bg-start), var(--bg-end));
 }
 
 .notification {

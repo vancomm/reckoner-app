@@ -17,8 +17,6 @@ function TotalCard({ name, value, items }: TotalCardProps) {
   const [collapseDetails, setCollapseDetails] = useState(true);
   const ref = useRef<HTMLDivElement>(null);
 
-  const [flag, setFlag] = useState(false);
-
   return (
     <CardContainer>
       <Card className={styles.totalCard}>
