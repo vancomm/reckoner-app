@@ -9,6 +9,7 @@ const hoursUntilStale = -1;
 
 export interface CacheKeyMap {
   names: string[];
+  showManual: boolean;
 }
 
 export type CacheKey = keyof CacheKeyMap;

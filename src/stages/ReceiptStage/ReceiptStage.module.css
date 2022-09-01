@@ -6,6 +6,11 @@
   gap: 0.5rem;
 }
 
+.helpButton {
+  font-size: 1em !important;
+  text-decoration: none !important;
+}
+
 .fileInput {
   width: 100%;
   font-size: inherit;

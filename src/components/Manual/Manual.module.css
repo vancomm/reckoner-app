@@ -1,0 +1,43 @@
+.manualContainer {
+  position: relative;
+  gap: .4em;
+}
+
+.manualControls {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  /* margin-bottom: -12px; */
+}
+
+.content {
+  display: flex;
+  gap: .4em;
+}
+
+.content img {
+  width: 100%;
+}
+
+.dismissIcon {
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  fill: var(--color-primary);
+  /* opacity: 0.6; */
+}
+
+.dismissIcon:hover {
+  /* opacity: 1; */
+}
+
+.dontShowAgain {
+  display: inline;
+  opacity: 0.5;
+  font-size: .8rem;
+}

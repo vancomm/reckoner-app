@@ -1,6 +1,6 @@
 // import cn from "classnames";
 import { useAppState } from "../../contexts/AppStateContext";
-import StageContainer from "../StageContainer";
+import StageContainer from "../../components/StageContainer";
 import NameForm from "./NameForm";
 import styles from "./NamesStage.module.css";
 
@@ -14,6 +14,11 @@ export default function NamesStage({ backFn, nextFn }: NamesStageProps) {
 
   if (!names) return null;
 
+  const isInvalidName = (name: string, index: number) =>
+    name !== "" &&
+    (name.trim() === "" ||
+      names.some((n, i) => i < index && n.trim() === name.trim()));
+
   return (
     <StageContainer
       handleBack={() => {
@@ -25,7 +30,8 @@ export default function NamesStage({ backFn, nextFn }: NamesStageProps) {
       nextCondition={
         names.length > 0 &&
         new Set(names.map((n) => n.trim())).size ===
-          names.map((n) => n.trim()).length
+          names.map((n) => n.trim()).length &&
+        !names.some(isInvalidName)
       }
     >
       <StageContainer.Title>User Names</StageContainer.Title>
@@ -36,10 +42,7 @@ export default function NamesStage({ backFn, nextFn }: NamesStageProps) {
             key={`name-form-${index}`}
             name={name}
             index={index}
-            invalid={
-              name !== "" &&
-              names.some((n, i) => i < index && n.trim() === name.trim())
-            }
+            invalid={isInvalidName(name, index)}
             onChange={(e) => {
               const { value } = e.target;
               setNames((state) =>
@@ -53,8 +56,9 @@ export default function NamesStage({ backFn, nextFn }: NamesStageProps) {
             }}
             onBlur={(e) => {
               const { value } = e.target;
-              if (!value)
+              if (!value) {
                 setNames((state) => state.filter((_, i) => i !== index));
+              }
             }}
             onEnter={() => {
               const nextSelector =

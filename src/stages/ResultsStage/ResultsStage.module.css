@@ -14,7 +14,7 @@
 }
 
 .totalCard {
-  padding-bottom: 0;
+  /* padding-bottom: 0; */
 }
 
 .title {
@@ -25,20 +25,42 @@
   font-family: monospace;
 }
 
+.number {
+  text-align: right;
+}
+
 .details {
   width: 100%;
-  padding-bottom: 20px;
+  padding-bottom: .4em;
   display: grid;
-  grid-template-columns: 1fr repeat(3, min-content);
+  grid-template-columns: 1fr repeat(5, min-content);
+  row-gap: 0.3em;
   column-gap: .5em;
   transition: height ease 200ms;
   position: relative;
 }
 
 .details * {
-  font: 0.7rem monospace;
+  font: .7rem monospace;
   min-width: 0;
-  overflow: scroll;
+}
+
+.details :nth-child(6n) {
+  font-weight: bold;
+}
+
+.details :last-child {
+  grid-column: 1/-1;
+  border-top: 2px dotted white;
+}
+
+.totalLine {
+  display: flex;
+  justify-content: space-between;
+}
+
+.totalLine * {
+  font-family: monospace;
 }
 
 .again {

@@ -1,13 +1,13 @@
 import cn from "classnames";
 
-import StageContainer from "../StageContainer";
+import StageContainer from "../../components/StageContainer";
 import Card, {
   CardContainer,
   CardActions,
   Button,
   Toggle,
   CardProps,
-} from "../Card";
+} from "../../components/Card";
 
 import { useAppState } from "../../contexts/AppStateContext";
 import { UniqueItem } from "../../utils/parseReceiptDocument";

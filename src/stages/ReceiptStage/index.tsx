@@ -1,11 +1,12 @@
 import { useState } from "react";
 import cn from "classnames";
 import { useAppState } from "../../contexts/AppStateContext";
-import StageContainer from "../StageContainer";
+import StageContainer from "../../components/StageContainer";
 import parseReceipt, { UniqueItem } from "../../utils/parseReceiptDocument";
 import testfile from "../../data/test-file.json";
 import styles from "./ReceiptStage.module.css";
 import { isSuccessful } from "../../utils/Optional";
+import { Button } from "../../components/Card";
 
 interface ReceiptStageProps {
   nextFn: () => void;
@@ -14,7 +15,11 @@ interface ReceiptStageProps {
 export default function ReceiptStage({ nextFn }: ReceiptStageProps) {
   const [errorMessage, setErrorMessage] = useState("");
 
-  const { receiptData, setReceiptData } = useAppState();
+  const {
+    receiptData,
+    setReceiptData,
+    uiState: { setShowManual },
+  } = useAppState();
 
   return (
     <StageContainer
@@ -33,7 +38,14 @@ export default function ReceiptStage({ nextFn }: ReceiptStageProps) {
         },
       ]}
     >
-      <StageContainer.Title>File Upload</StageContainer.Title>
+      <StageContainer.Title>
+        File Upload{" "}
+        <Button
+          label="(?)"
+          className={styles.helpButton}
+          onClick={() => setShowManual((state) => !state)}
+        />
+      </StageContainer.Title>
       <span>Upload a JSON file with the receipt.</span>
       <div className={styles.fileForm}>
         <input

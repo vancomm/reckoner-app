@@ -1,6 +1,7 @@
 import cn, { Argument } from "classnames";
 import { Customizable } from "../../types/Customizable";
 import { Nestable } from "../../types/Nestable";
+import Container from "../Container";
 import styles from "./StageContainer.module.css";
 
 interface CustomControl extends Customizable {
@@ -27,7 +28,7 @@ export default function StageContainer({
   children,
 }: StageContainerProps) {
   return (
-    <div className={cn(styles.container, className)}>
+    <Container className={cn(className)}>
       {children}
       <div className={styles.buttonContainer}>
         {handleBack && (
@@ -58,7 +59,7 @@ export default function StageContainer({
           )
         )}
       </div>
-    </div>
+    </Container>
   );
 }
 

@@ -49,12 +49,19 @@ export function CardActions({ id, className, style, children }: CardProps) {
   );
 }
 
-interface ButtonProps extends Customizable {
-  label: string;
+interface ButtonProps extends Nestable, Customizable {
+  label?: string;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-export function Button({ id, label, onClick, className, style }: ButtonProps) {
+export function Button({
+  id,
+  label,
+  onClick,
+  className,
+  style,
+  children,
+}: ButtonProps) {
   return (
     <button
       id={id}
@@ -63,6 +70,7 @@ export function Button({ id, label, onClick, className, style }: ButtonProps) {
       style={style}
     >
       {label}
+      {children}
     </button>
   );
 }

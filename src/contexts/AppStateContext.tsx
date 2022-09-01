@@ -1,6 +1,6 @@
 import { createContext, useState, useMemo, useContext, useEffect } from "react";
 import { get, set } from "../helpers/cacheHelper";
-import { isSuccessful } from "../utils/Optional";
+import { handleOption } from "../utils/Optional";
 import { UniqueItem } from "../utils/parseReceiptDocument";
 
 export interface ReceiptData {
@@ -9,6 +9,11 @@ export interface ReceiptData {
 
 export type Result = Record<string, string[]>;
 
+interface UIState {
+  showManual: boolean;
+  setShowManual: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 interface AppStateInterface {
   names: string[];
   setNames: React.Dispatch<React.SetStateAction<string[]>>;
@@ -16,6 +21,7 @@ interface AppStateInterface {
   setReceiptData: React.Dispatch<React.SetStateAction<ReceiptData | undefined>>;
   result: Result;
   setResult: React.Dispatch<React.SetStateAction<Result>>;
+  uiState: UIState;
 }
 
 const AppStateContext = createContext<AppStateInterface>(
@@ -32,13 +38,13 @@ export function AppStateProvider({ children }: StateProviderProps) {
   const [initialized, setInitialized] = useState(false);
 
   const [names, setNames] = useState<string[]>([]);
-  const [receiptData, setReceiptData] = useState<ReceiptData>();
-  const [result, setResult] = useState<Result>(initResult);
 
   const saveNames = (value: React.SetStateAction<string[]>) => {
     setNames(value);
     setResult({});
   };
+
+  const [receiptData, setReceiptData] = useState<ReceiptData>();
 
   const saveReceiptData = (
     value: React.SetStateAction<ReceiptData | undefined>
@@ -46,6 +52,15 @@ export function AppStateProvider({ children }: StateProviderProps) {
     setReceiptData(value);
     setResult({});
   };
+
+  const [result, setResult] = useState<Result>(initResult);
+
+  const [showManual, setShowManual] = useState(false);
+
+  const uiState: UIState = useMemo(
+    () => ({ showManual, setShowManual }),
+    [showManual]
+  );
 
   const value = useMemo(
     () => ({
@@ -55,14 +70,24 @@ export function AppStateProvider({ children }: StateProviderProps) {
       setNames: saveNames,
       setReceiptData: saveReceiptData,
       setResult,
+      uiState,
     }),
-    [names, receiptData, result]
+    [names, receiptData, result, uiState]
   );
 
-  const init = async () => {
-    const cachedNames = await get("names");
-    if (isSuccessful(cachedNames)) setNames(cachedNames.value);
-  };
+  const init = async () =>
+    Promise.all([
+      get("names").then(handleOption(setNames)),
+      get("showManual").then(
+        handleOption(
+          (value) => setShowManual(value),
+          () => {
+            setShowManual(true);
+            set("showManual", true);
+          }
+        )
+      ),
+    ]);
 
   useEffect(() => {
     init().then(() => setInitialized(true));

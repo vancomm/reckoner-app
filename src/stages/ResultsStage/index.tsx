@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
-import Collapsible from "../Collapsible";
-import StageContainer from "../StageContainer";
-import Card, { CardContainer, CardActions } from "../Card";
+import Collapsible from "../../components/Collapsible";
+import StageContainer from "../../components/StageContainer";
+import Card, { CardContainer, CardActions } from "../../components/Card";
 import { useAppState } from "../../contexts/AppStateContext";
 import { UniqueItem } from "../../utils/parseReceiptDocument";
 import formatMoney from "../../utils/formatMoney";
@@ -21,20 +21,32 @@ function TotalCard({ name, value, items }: TotalCardProps) {
     <CardContainer>
       <Card className={styles.totalCard}>
         <Card.Title className={styles.title}>{name}</Card.Title>
-        <div className={styles.value}>{`total: ${formatMoney(value)}`}</div>
+
+        {/* <div className={styles.value}>{`total: ${formatMoney(value)}`}</div> */}
+
         <div>
           <Collapsible open={!collapseDetails}>
             <div ref={ref} className={styles.details}>
               {items.map((item, i) => (
                 <React.Fragment key={`detail-${i}`}>
                   <div>{item.name}</div>
-                  <div>{formatMoney(item.sum)}</div>
-                  <div>{item.owners.length}</div>
-                  <div>{formatMoney(item.sum / item.owners.length)}</div>
+                  <div className={styles.number}>{formatMoney(item.sum)}</div>
+                  <div>/</div>
+                  <div className={styles.number}>{item.owners.length}</div>
+                  <div>=</div>
+                  <div className={styles.number}>
+                    {formatMoney(item.sum / item.owners.length)}
+                  </div>
                 </React.Fragment>
               ))}
+              <div></div>
             </div>
           </Collapsible>
+
+          <div className={styles.totalLine}>
+            <span>total:</span>
+            <span>{formatMoney(value)}</span>
+          </div>
         </div>
       </Card>
       <CardActions>
@@ -42,12 +54,6 @@ function TotalCard({ name, value, items }: TotalCardProps) {
           label={collapseDetails ? "expand" : "collapse"}
           onClick={() => setCollapseDetails((state) => !state)}
         />
-        {/* <CardActions.Toggle
-          id={`toggle-${name}`}
-          active={flag}
-          label={"toggle"}
-          onClick={() => setFlag((state) => !state)}
-        /> */}
       </CardActions>
     </CardContainer>
   );

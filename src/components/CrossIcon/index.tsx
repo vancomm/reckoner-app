@@ -1,10 +1,9 @@
+import cn from "classnames";
 import { ReactComponent as Cross } from "../../assets/icons/cross.svg";
+import { Customizable } from "../../types/Customizable";
 
-interface CrossIconProps {
-  width: string;
-  height: string;
-}
+interface CrossIconProps extends Customizable {}
 
-export default function CrossIcon({ width, height }: CrossIconProps) {
-  return <Cross className="cross" width={width} height={height} />;
+export default function CrossIcon({ id, className, style }: CrossIconProps) {
+  return <Cross id={id} className={cn("cross", className)} style={style} />;
 }

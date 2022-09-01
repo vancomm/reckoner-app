@@ -24,10 +24,12 @@ export function makeFailed(message: string): Failed {
 
 export function handleOption<T, S, F>(
   handleSuccess: (value: T) => S,
-  handleFail: (message: string) => F
-): (option: Optional<T>) => S | F {
+  handleFail?: (message: string) => F
+): (option: Optional<T>) => S | F | string {
   return (option) =>
     isSuccessful(option)
       ? handleSuccess(option.value)
-      : handleFail(option.message);
+      : handleFail
+      ? handleFail(option.message)
+      : option.message;
 }
