@@ -32,7 +32,10 @@ export default function ReceiptStage({ nextFn }: ReceiptStageProps) {
           label: "Load test data",
           onClick: () => {
             const opt = parseReceipt(JSON.stringify(testfile));
-            if (isSuccessful(opt)) setReceiptData(opt.value);
+            if (isSuccessful(opt)) {
+              setReceiptData(opt.value);
+              setErrorMessage("");
+            }
           },
           style: { order: -1 },
         },

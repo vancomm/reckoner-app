@@ -16,7 +16,7 @@ const validate = ajv.compile<ReceiptDocument>(receiptSchema);
 export default function parseReceipt(json: string): Optional<ReceiptData> {
   const data = JSON.parse(json);
 
-  if (!validate(data)) return makeFailed("Bad JSON format");
+  if (!validate(data)) return makeFailed("Bad JSON shape");
 
   const items = data[0].ticket.document.receipt.items;
 

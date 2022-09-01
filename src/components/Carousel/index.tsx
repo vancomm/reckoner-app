@@ -73,7 +73,7 @@ function InnerCarousel({ id, className, style, children }: CarouselProps) {
   return (
     <div id={id} className={cn(styles.carousel, className)} style={style}>
       {children}
-      <CarouselControls />
+      {items.length > 1 && <CarouselControls />}
     </div>
   );
 }
