@@ -2,9 +2,9 @@
   width: 100%;
 }
 
-.optionsTitle {
-  /* align-self: center; */
-}
+/* .optionsTitle {
+  align-self: center;
+} */
 
 .optionsRows {
   display: flex;
@@ -19,9 +19,19 @@
 
 .items {
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+  display: grid;
+  align-items: start;
+  gap: var(--gap);
+}
+
+@media (min-width: 45rem) {
+  .itemsContainer {
+    width: 100%;
+  }
+
+  .items {
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  }
 }
 
 .itemTitle {
@@ -42,6 +52,10 @@
 .namePicker .nameLabel {
   background-color: var(--bg-overlay);
 }
+
+/* :checked~.nameLabel{
+  outline: 3px solid green;
+} */
 
 .nameLabel:hover {
   background-color: var(--bg-overlay-hover);

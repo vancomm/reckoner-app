@@ -1,12 +1,16 @@
 @import url("./assets/styles/success.css");
 
 :root {
+  --gap: 1rem;
+
   --bg-start: rgb(8, 90, 198);
   --bg-end: rgb(0, 187, 255);
 
+  --bg-overlay-alpha: 0.3;
+
   --bg-overlay-active: rgba(0, 0, 0, 0.6);
   --bg-overlay-hover: rgba(0, 0, 0, 0.4);
-  --bg-overlay: rgba(0, 0, 0, 0.3);
+  --bg-overlay: rgba(0, 0, 0, var(--bg-overlay-alpha));
   --bg-overlay-light: rgba(0, 0, 0, 0.15);
 
   --color-primary: white;
@@ -20,17 +24,54 @@
 *, *::after, *::before {
   font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
   color: var(--color-primary);
-  /* text-transform: lowercase; */ /* lol */
+  /* text-transform: lowercase;  */
 }
 
 .app {
   min-height: 100vh;
-  padding: 20px;
+  padding: var(--gap);
   display: flex;
+  gap: var(--gap);
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: .7em;
-  background: no-repeat fixed center/cover linear-gradient(to bottom, var(--bg-start), var(--bg-end));
+  background: linear-gradient(to bottom, var(--bg-start), var(--bg-end));
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+main {
+  width: 100%;
+  margin: auto;
+  display: flex;
+  gap: var(--gap);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (min-width: 800px) {
+  main {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+footer * {
+  color: var(--color-faded);
+}
+
+footer :not(:last-child)::after {
+  content: "/";
+  margin: 0 .5em;
 }
 
 .notification {
@@ -40,17 +81,6 @@
   font-size: smaller;
   text-align: center;
   color: white;
-}
-
-.footer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: .1em;
-}
-
-.footer * {
-  color: var(--color-faded);
 }
 
 .link:hover {

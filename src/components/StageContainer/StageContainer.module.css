@@ -4,17 +4,18 @@
 }
 
 .buttonContainer {
-  display: flex;
-  gap: .5rem;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: calc(var(--gap) / 2);
 }
 
 .button {
-  width: fit-content;
-  background-color: var(--bg-overlay);
+  width: 100%;
+  padding: .4em 1em;
   border: none;
   border-radius: .3em;
-  padding: .4em 1em;
-  color: inherit;
+  background-color: var(--bg-overlay);
   font-size: 1.2rem;
 }
 

@@ -18,6 +18,8 @@ export default function Manual() {
     uiState: { setShowManual },
   } = useAppState();
 
+  const [ready, setReady] = useState(false);
+
   const [manualPageOne, setManualPageOne] = useState("");
   const [manualPageTwo, setManualPageTwo] = useState("");
   const [manualPageThree, setManualPageThree] = useState("");
@@ -39,11 +41,14 @@ export default function Manual() {
       loadPage(pageThree, setManualPageThree),
       loadPage(pageFour, setManualPageFour),
       loadPage(pageFive, setManualPageFive),
-    ]);
+    ]).then(() => setReady(true));
   }, []);
 
   return (
-    <Container className={styles.manualContainer}>
+    <Container
+      className={styles.manualContainer}
+      style={ready ? undefined : { display: "none" }}
+    >
       <div className={styles.manualControls}>
         <Button
           label="don't show again"

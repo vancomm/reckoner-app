@@ -9,6 +9,13 @@ export interface ReceiptData {
 
 export type Result = Record<string, string[]>;
 
+export interface DistributionItem {
+  name: string;
+  share: number;
+}
+
+export type DistributionMap = Map<UniqueItem, DistributionItem[]>;
+
 interface UIState {
   showManual: boolean;
   setShowManual: React.Dispatch<React.SetStateAction<boolean>>;
@@ -21,6 +28,8 @@ interface AppStateInterface {
   setReceiptData: React.Dispatch<React.SetStateAction<ReceiptData | undefined>>;
   result: Result;
   setResult: React.Dispatch<React.SetStateAction<Result>>;
+  distMap?: DistributionMap;
+  setDistMap: React.Dispatch<React.SetStateAction<DistributionMap | undefined>>;
   uiState: UIState;
 }
 
@@ -53,6 +62,8 @@ export function AppStateProvider({ children }: StateProviderProps) {
     setResult({});
   };
 
+  const [distMap, setDistMap] = useState<DistributionMap>();
+
   const [result, setResult] = useState<Result>(initResult);
 
   const [showManual, setShowManual] = useState(false);
@@ -65,14 +76,16 @@ export function AppStateProvider({ children }: StateProviderProps) {
   const value = useMemo(
     () => ({
       names,
-      receiptData,
-      result,
       setNames: saveNames,
+      receiptData,
       setReceiptData: saveReceiptData,
+      distMap,
+      setDistMap,
+      result,
       setResult,
       uiState,
     }),
-    [names, receiptData, result, uiState]
+    [names, receiptData, distMap, result, uiState]
   );
 
   const init = async () =>

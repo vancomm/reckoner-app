@@ -2,13 +2,13 @@ import { useState } from "react";
 
 import { useAppState } from "./contexts/AppStateContext";
 
+import Manual from "./components/Manual";
 import ReceiptStage from "./stages/ReceiptStage";
 import NamesStage from "./stages/NamesStage";
 import ItemsStage from "./stages/ItemsStage";
 import ResultsStage from "./stages/ResultsStage";
 
 import "./App.css";
-import Manual from "./components/Manual";
 
 const stages = ["receipt", "names", "items", "results"] as const;
 
@@ -24,35 +24,40 @@ export default function App() {
   } = useAppState();
 
   return (
-    <div className="app bg-gradient">
-      {showManual && <Manual />}
+    <div className="app">
+      <main>
+        {showManual && <Manual />}
+        {stage === "receipt" && (
+          <ReceiptStage nextFn={() => setStage("names")} />
+        )}
 
-      {stage === "receipt" && <ReceiptStage nextFn={() => setStage("names")} />}
+        {stage === "names" && (
+          <NamesStage
+            backFn={() => setStage("receipt")}
+            nextFn={() => setStage("items")}
+          />
+        )}
 
-      {stage === "names" && (
-        <NamesStage
-          backFn={() => setStage("receipt")}
-          nextFn={() => setStage("items")}
-        />
-      )}
+        {stage === "items" && receiptData && names && (
+          <ItemsStage
+            backFn={() => setStage("names")}
+            nextFn={() => setStage("results")}
+          />
+        )}
 
-      {stage === "items" && receiptData && names && (
-        <ItemsStage
-          backFn={() => setStage("names")}
-          nextFn={() => setStage("results")}
-        />
-      )}
-
-      {stage === "results" && result && (
-        <ResultsStage
-          backFn={() => setStage("items")}
-          againFn={() => setStage("receipt")}
-        />
-      )}
-      <div className="footer">
-        <a className="link" href="https://github.com/vancomm/reckoner-app">
-          source code
-        </a>
+        {stage === "results" && result && (
+          <ResultsStage
+            backFn={() => setStage("items")}
+            againFn={() => setStage("receipt")}
+          />
+        )}
+      </main>
+      <footer>
+        <span>
+          <a className="link" href="https://github.com/vancomm/reckoner-app">
+            source code
+          </a>
+        </span>
         <span>
           {"made by "}
           <a className="link" href="https://github.com/vancomm">
@@ -60,7 +65,7 @@ export default function App() {
           </a>
         </span>
         <span>2022</span>
-      </div>
+      </footer>
     </div>
   );
 }

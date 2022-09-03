@@ -1,6 +1,6 @@
 ### todo
 
-- [ ] # write a manual
+- [x] # write a manual
 
 - [x] ~~use Redux to store state~~ (*or just useEffect???...*)
 

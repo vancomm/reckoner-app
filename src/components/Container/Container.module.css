@@ -1,13 +1,11 @@
 .container {
-  max-width: 400px;
-  width: 100%;
-  padding: 1rem 20px;
+  width: clamp(12em, 20em, 100%);
+  padding: var(--gap);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: var(--gap);
   background-color: var(--bg-overlay);
   border-radius: 1em;
   color: white;
-  font-size: 1rem;
 }

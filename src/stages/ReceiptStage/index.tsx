@@ -29,7 +29,7 @@ export default function ReceiptStage({ nextFn }: ReceiptStageProps) {
       nextCondition={!!receiptData}
       customControls={[
         {
-          label: "Load test data",
+          label: "Test",
           onClick: () => {
             const opt = parseReceipt(JSON.stringify(testfile));
             if (isSuccessful(opt)) {

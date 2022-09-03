@@ -14,6 +14,7 @@ import { UniqueItem } from "../../utils/parseReceiptDocument";
 import styles from "./ItemsStage.module.css";
 import { useState } from "react";
 import range from "../../utils/range";
+import Select from "../../components/Select";
 
 interface NamePickerProps {
   names: string[];
@@ -116,7 +117,8 @@ function getMergeFunc(
 }
 
 export default function ItemsStage({ backFn, nextFn }: ItemsStageProps) {
-  const { names, receiptData, result, setResult } = useAppState();
+  const { names, receiptData, distMap, setDistMap, result, setResult } =
+    useAppState();
 
   const [merge, setMerge] = useState<MergeOption>("none");
 
@@ -128,6 +130,7 @@ export default function ItemsStage({ backFn, nextFn }: ItemsStageProps) {
 
   return (
     <StageContainer
+      className={styles.itemsContainer}
       handleBack={() => {
         backFn();
       }}
@@ -218,6 +221,7 @@ export default function ItemsStage({ backFn, nextFn }: ItemsStageProps) {
                     });
                   }}
                 />
+                {/* <Select /> */}
               </CardActions>
             </CardContainer>
           );
