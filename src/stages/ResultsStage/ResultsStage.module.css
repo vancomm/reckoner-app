@@ -10,7 +10,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: var(--gap);
 }
 
 .totalCard {
@@ -38,7 +38,7 @@
 }
 
 .gridDetails * {
-  font: .7rem monospace;
+  font: .6rem monospace;
   min-width: 0;
 }
 

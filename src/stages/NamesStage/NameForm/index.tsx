@@ -1,5 +1,6 @@
 import cn from "classnames";
 import { useState } from "react";
+import CrossIcon from "../../../components/CrossIcon";
 import CrossInCircleIcon from "../../../components/CrossInCircleIcon";
 import styles from "./NameForm.module.css";
 
@@ -9,6 +10,7 @@ interface NameFormProps {
   invalid?: boolean;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   onClear?: () => void;
+  onDelete?: () => void;
   onEnter?: React.KeyboardEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
 }
@@ -18,6 +20,7 @@ export default function NameForm({
   name,
   onChange,
   onClear,
+  onDelete,
   onBlur,
   onEnter,
   invalid = false,
@@ -49,7 +52,6 @@ export default function NameForm({
           className={cn(styles.crossInCircleBtn, {
             [styles.active]: clearActive,
           })}
-          type="reset"
           onMouseDown={(e) => {
             e.preventDefault();
             setClearActive(true);
@@ -61,6 +63,12 @@ export default function NameForm({
           <CrossInCircleIcon width="1em" height="1em" />
         </button>
       )}
+      {/* 
+      {onDelete && (
+        <button className={styles.deleteBtn}>
+          <CrossIcon style={{ width: "1em", height: "1em" }} />
+        </button>
+      )} */}
 
       {/* <button className="cross-btn">
         <CrossIcon width="1em" height="1em" />

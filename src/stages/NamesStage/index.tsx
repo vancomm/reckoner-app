@@ -54,6 +54,9 @@ export default function NamesStage({ backFn, nextFn }: NamesStageProps) {
             onClear={() => {
               setNames((state) => state.map((v, i) => (i === index ? "" : v)));
             }}
+            onDelete={() => {
+              setNames((state) => state.filter((v, i) => i !== index));
+            }}
             onBlur={(e) => {
               const { value } = e.target;
               if (!value) {
