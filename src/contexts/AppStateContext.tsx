@@ -13,6 +13,12 @@ export type Distribution = Record<string, number>;
 
 export type DistributionMap = Map<UniqueItem, Distribution>;
 
+export interface InputRecord {
+  item: UniqueItem;
+  name: string;
+  share: number;
+}
+
 interface UIState {
   showManual: boolean;
   setShowManual: React.Dispatch<React.SetStateAction<boolean>>;
@@ -23,18 +29,14 @@ interface AppStateInterface {
   setNames: React.Dispatch<React.SetStateAction<string[]>>;
   receiptData?: ReceiptData;
   setReceiptData: React.Dispatch<React.SetStateAction<ReceiptData | undefined>>;
-  result: Result;
-  setResult: React.Dispatch<React.SetStateAction<Result>>;
-  distMap: DistributionMap;
-  setDistMap: React.Dispatch<React.SetStateAction<DistributionMap>>;
+  inputRecords: InputRecord[];
+  setInputRecords: React.Dispatch<React.SetStateAction<InputRecord[]>>;
   uiState: UIState;
 }
 
 const AppStateContext = createContext<AppStateInterface>(
   {} as AppStateInterface
 );
-
-const initResult = {};
 
 interface StateProviderProps {
   children: React.ReactNode;
@@ -47,7 +49,7 @@ export function AppStateProvider({ children }: StateProviderProps) {
 
   const saveNames = (value: React.SetStateAction<string[]>) => {
     setNames(value);
-    setResult({});
+    setInputRecords([]);
   };
 
   const [receiptData, setReceiptData] = useState<ReceiptData>();
@@ -56,12 +58,10 @@ export function AppStateProvider({ children }: StateProviderProps) {
     value: React.SetStateAction<ReceiptData | undefined>
   ) => {
     setReceiptData(value);
-    setResult({});
+    setInputRecords([]);
   };
 
-  const [distMap, setDistMap] = useState<DistributionMap>(new Map());
-
-  const [result, setResult] = useState<Result>(initResult);
+  const [inputRecords, setInputRecords] = useState<InputRecord[]>([]);
 
   const [showManual, setShowManual] = useState(false);
 
@@ -76,13 +76,11 @@ export function AppStateProvider({ children }: StateProviderProps) {
       setNames: saveNames,
       receiptData,
       setReceiptData: saveReceiptData,
-      distMap,
-      setDistMap,
-      result,
-      setResult,
+      inputRecords,
+      setInputRecords,
       uiState,
     }),
-    [names, receiptData, distMap, result, uiState]
+    [names, receiptData, inputRecords, uiState]
   );
 
   const init = async () =>

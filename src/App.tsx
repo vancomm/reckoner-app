@@ -17,9 +17,6 @@ type Stage = typeof stages[number];
 export default function App() {
   const [stage, setStage] = useState<Stage>("receipt");
   const {
-    names,
-    receiptData,
-    result,
     uiState: { showManual },
   } = useAppState();
 
@@ -38,14 +35,14 @@ export default function App() {
           />
         )}
 
-        {stage === "items" && receiptData && names && (
+        {stage === "items" && (
           <ItemsStage
             backFn={() => setStage("names")}
             nextFn={() => setStage("results")}
           />
         )}
 
-        {stage === "results" && result && (
+        {stage === "results" && (
           <ResultsStage
             backFn={() => setStage("items")}
             againFn={() => setStage("receipt")}

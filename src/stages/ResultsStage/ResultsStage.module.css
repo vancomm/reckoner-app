@@ -25,10 +25,6 @@
   font-family: monospace;
 }
 
-.number {
-  text-align: right;
-}
-
 .details {
   width: 100%;
   padding-bottom: .4em;
@@ -45,11 +41,21 @@
   min-width: 0;
 }
 
-.details :nth-child(6n) {
+.details > * {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.details > .number {
+  justify-content: flex-end;
+}
+
+.details > :nth-child(6n) {
   font-weight: bold;
 }
 
-.details :last-child {
+.details > :last-child {
   grid-column: 1/-1;
   border-top: 2px dotted white;
 }

@@ -7,33 +7,114 @@ import Card, {
   CardActions,
   Button,
   Toggle,
-  CardProps,
 } from "../../components/Card";
 
-import { useAppState } from "../../contexts/AppStateContext";
+import { InputRecord, useAppState } from "../../contexts/AppStateContext";
 import { UniqueItem } from "../../utils/parseReceiptDocument";
 import range from "../../utils/range";
 import styles from "./ItemsStage.module.css";
 
-interface ItemCardProps extends CardProps {
+interface ItemContainerProps {
   item: UniqueItem;
 }
 
-function ItemCard({ item, children }: ItemCardProps) {
+function ItemContainer({ item }: ItemContainerProps) {
+  const { names, inputRecords, setInputRecords } = useAppState();
+
   const { index, name, price, quantity } = item;
 
+  const isCardFilled = inputRecords
+    .filter((r) => r.item === item)
+    .some((r) => r.share > 0);
+
+  const handleNameClick =
+    (name: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { checked } = e.target;
+
+      const next: InputRecord = { item, name, share: checked ? 1 : 0 };
+
+      setInputRecords((state) => {
+        const prev = state.find((r) => r.item === item && r.name === name);
+        return prev
+          ? state.map((r) => (r === prev ? next : r))
+          : [...state, next];
+      });
+    };
+
+  const isNameChecked = (name: string) => {
+    const savedShare =
+      inputRecords.find((r) => r.item === item && r.name === name)?.share ?? 0;
+    return savedShare > 0;
+  };
+
+  const handleInvertClick = () => {
+    setInputRecords((state) => {
+      const prev = state.filter((r) => r.item === item);
+      const next = names.map((name) => {
+        const prevShare = prev.find((r) => r.name === name)?.share ?? 0;
+        return {
+          item,
+          name,
+          share: 1 - prevShare,
+        };
+      });
+      return state.filter((r) => r.item !== item).concat(next);
+    });
+  };
+
+  const handleAllClick = () => {
+    setInputRecords((state) => {
+      const prev = state.filter((r) => r.item === item);
+      const next =
+        prev.length === names.length && prev.every((r) => r.share === 1)
+          ? prev.map((r) => ({ ...r, share: 0 }))
+          : names.map((name) => ({ item, name, share: 1 }));
+      return state.filter((r) => r.item !== item).concat(next);
+    });
+  };
+
   return (
-    <Card id={`item-${index}`} className={styles.itemCard}>
-      <Card.Title className={styles.itemTitle}>
-        {name.toLowerCase()}
+    <CardContainer
+      className={cn(styles.itemContainer, {
+        [styles.success]: isCardFilled,
+      })}
+    >
+      <Card id={`item-${index}`} className={styles.itemCard}>
+        <Card.Title className={styles.itemTitle}>
+          {name.toLowerCase()}
 
-        <Card.Subtitle className={styles.itemSubtitle}>
-          {`${price / 100} × ${quantity}`}
-        </Card.Subtitle>
-      </Card.Title>
+          <Card.Subtitle className={styles.itemSubtitle}>
+            {`${price / 100} × ${quantity}`}
+          </Card.Subtitle>
+        </Card.Title>
 
-      {children}
-    </Card>
+        <div className={styles.namePicker}>
+          {names.map((name, i) => (
+            <Toggle
+              key={`item-${index}-name-${i}`}
+              id={`item-${index}-input-${name}`}
+              className={styles.nameLabel}
+              label={name}
+              active={isNameChecked(name)}
+              onClick={handleNameClick(name)}
+            />
+          ))}
+        </div>
+      </Card>
+
+      <CardActions className={styles.itemCardActions}>
+        <Button
+          className={styles.itemCardAction}
+          label="invert"
+          onClick={handleInvertClick}
+        />
+        <Button
+          className={styles.itemCardAction}
+          label="all"
+          onClick={handleAllClick}
+        />
+      </CardActions>
+    </CardContainer>
   );
 }
 
@@ -92,74 +173,18 @@ interface ItemsStageProps {
 }
 
 export default function ItemsStage({ backFn, nextFn }: ItemsStageProps) {
-  const { names, receiptData, distMap, setDistMap } = useAppState();
+  const { receiptData, inputRecords } = useAppState();
 
   // const [merge, setMerge] = useState<MergeOption>("none");
 
-  if (!names || !receiptData) return null;
+  if (!receiptData) return null;
 
-  const { items } = receiptData;
+  // const items = getMergeFunc(merge)(receiptData.items);
+  const items = receiptData.items;
 
-  // const displayedItems = getMergeFunc(merge)(items);
-  const displayedItems = items;
-
-  const nextCondition =
-    distMap.size === displayedItems.length &&
-    [...distMap.values()].every((d) => Object.values(d).some((v) => v !== 0));
-
-  const isCardFilled = (item: UniqueItem) =>
-    Object.values(distMap.get(item) ?? {}).some((v) => v > 0);
-
-  const handleNameClick =
-    (item: UniqueItem) =>
-    (name: string) =>
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { checked } = e.target;
-      const value = checked ? 1 : 0;
-      setDistMap((state) => {
-        const prev = state.get(item) ?? {};
-        const next = { ...prev, [name]: value };
-        return new Map(state.set(item, next));
-      });
-    };
-
-  const isNameChecked = (item: UniqueItem) => (name: string) => {
-    const value = distMap.get(item)?.[name] ?? 0;
-    return value > 0;
-  };
-
-  const handleInvert = (item: UniqueItem) => () => {
-    setDistMap((state) => {
-      const prev = state.get(item) ?? {};
-      const next = { ...prev };
-      names.forEach((name) => {
-        next[name] = 1 - next[name] ?? 0;
-      });
-      return new Map(state).set(item, next);
-    });
-  };
-
-  const handleAll = (item: UniqueItem) => () => {
-    setDistMap((state) => {
-      const prev = state.get(item) ?? {};
-      const next = { ...prev };
-      if (
-        Object.values(next).length === names.length &&
-        Object.values(next).every((v) => v > 0)
-      ) {
-        names.forEach((name) => {
-          next[name] = 0;
-        });
-      } else {
-        names.forEach((name) => {
-          next[name] = 1;
-        });
-      }
-      const newState = new Map(state);
-      newState.set(item, next);
-      return newState;
-    });
-  };
+  const nextCondition = items.every((item) =>
+    inputRecords.some((r) => r.item === item && r.share > 0)
+  );
 
   return (
     <StageContainer
@@ -199,46 +224,9 @@ export default function ItemsStage({ backFn, nextFn }: ItemsStageProps) {
       )} */}
 
       <div className={styles.items}>
-        {displayedItems.map((item) => {
-          const { index } = item;
-
-          return (
-            <CardContainer
-              key={`item-${index}`}
-              className={cn(styles.itemContainer, {
-                [styles.success]: isCardFilled(item),
-              })}
-            >
-              <ItemCard item={item}>
-                <div className={styles.namePicker}>
-                  {names.map((name, i) => (
-                    <Toggle
-                      key={`item-${index}-name-${i}`}
-                      id={`item-${index}-input-${name}`}
-                      className={styles.nameLabel}
-                      label={name}
-                      active={isNameChecked(item)(name)}
-                      onClick={handleNameClick(item)(name)}
-                    />
-                  ))}
-                </div>
-              </ItemCard>
-
-              <CardActions className={styles.itemCardActions}>
-                <Button
-                  className={styles.itemCardAction}
-                  label="invert"
-                  onClick={handleInvert(item)}
-                />
-                <Button
-                  className={styles.itemCardAction}
-                  label="all"
-                  onClick={handleAll(item)}
-                />
-              </CardActions>
-            </CardContainer>
-          );
-        })}
+        {items.map((item) => (
+          <ItemContainer key={`item-${item.index}`} item={item} />
+        ))}
       </div>
     </StageContainer>
   );
