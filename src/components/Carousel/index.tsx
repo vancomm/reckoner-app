@@ -23,7 +23,19 @@ function CarouselContextProvider({ children }: CarouselContextProviderProps) {
   const [items, setItems] = useState<string[]>([]);
 
   const register = (id: string) =>
-    setItems((state) => (state.includes(id) ? state : [...state, id]));
+    setItems((state) =>
+      state.includes(id)
+        ? state
+        : [...state, id].sort((a, b) => {
+            const tailNumberRegex = /\d+$/;
+            const endsInANumber = (str: string) => /\d+$/.test(str);
+            if (!endsInANumber(a)) return endsInANumber(b) ? -1 : 1;
+            if (!endsInANumber(b)) return 1;
+            const numA = a.match(tailNumberRegex)![0];
+            const numB = b.match(tailNumberRegex)![0];
+            return parseInt(numA) - parseInt(numB);
+          })
+    );
 
   const value: CarouselContextInterface = useMemo(
     () => ({

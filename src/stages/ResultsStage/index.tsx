@@ -69,9 +69,9 @@ interface ResultsProps {
 }
 
 export default function ResultsStage({ backFn, againFn }: ResultsProps) {
-  const { receiptData, result } = useAppState();
+  const { receiptData, result, distMap } = useAppState();
 
-  if (!receiptData || !result) return null;
+  if (!receiptData || Object.keys(result).length < 1) return null;
 
   const { items } = receiptData;
 
@@ -87,6 +87,12 @@ export default function ResultsStage({ backFn, againFn }: ResultsProps) {
     });
     return acc;
   }, {} as Record<string, number>);
+
+  const processed = [...distMap.entries()].reduce((acc, [item, shares]) => {
+    const sum = Object.values(shares).reduce((a, b) => a + b);
+    const persons = Object.entries(shares).map((i) => ({ ...i, sum }));
+    return [];
+  }, [] as any[]);
 
   return (
     <StageContainer

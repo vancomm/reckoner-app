@@ -9,12 +9,9 @@ export interface ReceiptData {
 
 export type Result = Record<string, string[]>;
 
-export interface DistributionItem {
-  name: string;
-  share: number;
-}
+export type Distribution = Record<string, number>;
 
-export type DistributionMap = Map<UniqueItem, DistributionItem[]>;
+export type DistributionMap = Map<UniqueItem, Distribution>;
 
 interface UIState {
   showManual: boolean;
@@ -28,8 +25,8 @@ interface AppStateInterface {
   setReceiptData: React.Dispatch<React.SetStateAction<ReceiptData | undefined>>;
   result: Result;
   setResult: React.Dispatch<React.SetStateAction<Result>>;
-  distMap?: DistributionMap;
-  setDistMap: React.Dispatch<React.SetStateAction<DistributionMap | undefined>>;
+  distMap: DistributionMap;
+  setDistMap: React.Dispatch<React.SetStateAction<DistributionMap>>;
   uiState: UIState;
 }
 
@@ -62,7 +59,7 @@ export function AppStateProvider({ children }: StateProviderProps) {
     setResult({});
   };
 
-  const [distMap, setDistMap] = useState<DistributionMap>();
+  const [distMap, setDistMap] = useState<DistributionMap>(new Map());
 
   const [result, setResult] = useState<Result>(initResult);
 
