@@ -13,27 +13,27 @@ interface FractionProps {
 }
 
 function Fraction({ numerator, denominator }: FractionProps) {
-  const isSupported = (num: number, den: number) => {
-    if (
-      !Number.isInteger(num) ||
-      !Number.isInteger(den) ||
-      num < 1 ||
-      num > 7 ||
-      den < 2 ||
-      den > 10 ||
-      num >= den
-    )
-      return false;
-    if (num === 1) return true; // all valid dens have a num == 1
-    if (den === 7 || den >= 9) return false; // dens 7, 9, 10 only have a num == 1
-    if (den < 6) return true; // dens below 6 have all remaining nums
-    if (den === 6 && num === 5) return true;
-    if (den === 8 && num % 2 === 0) return true;
-    return false;
-  };
+  // const isSupported = (num: number, den: number) => {
+  //   if (
+  //     !Number.isInteger(num) ||
+  //     !Number.isInteger(den) ||
+  //     num < 1 ||
+  //     num > 7 ||
+  //     den < 2 ||
+  //     den > 10 ||
+  //     num >= den
+  //   )
+  //     return false;
+  //   if (num === 1) return true; // all valid dens have a num == 1
+  //   if (den === 7 || den >= 9) return false; // dens 7, 9, 10 only have a num == 1
+  //   if (den < 6) return true; // dens below 6 have all remaining nums
+  //   if (den === 6 && num === 5) return true;
+  //   if (den === 8 && num % 2 === 0) return true;
+  //   return false;
+  // };
 
   return (
-    <span>
+    <span className={styles.fraction}>
       <sup>{numerator}</sup>&frasl;<sub>{denominator}</sub>
     </span>
   );
@@ -60,24 +60,37 @@ function TotalCard({ name, records }: TotalCardProps) {
         <div>
           {records.length > 0 && (
             <Collapsible open={!collapseDetails}>
-              <div ref={ref} className={styles.details}>
+              <div ref={ref} className={styles.gridDetails}>
+                <div className={styles.gridTitle}>#</div>
+                <div className={styles.gridTitle}>Item</div>
+                <div className={styles.gridTitle}>Price</div>
+                <div className={styles.gridTitle}></div>
+                <div className={styles.gridTitle}></div>
+                <div className={styles.gridTitle}></div>
+                <div className={styles.gridTitle}>Sum</div>
                 {records.map(({ item, share, shares }, index) => (
                   <React.Fragment key={`total-${name}-${index}`}>
-                    <div>{item.name}</div>
+                    <div>{index + 1}</div>
+                    <div>
+                      <span>{item.name}</span>
+                    </div>
                     <div className={styles.number}>
                       {formatMoney(item.price)}
                     </div>
                     <div>×</div>
-                    <div className={styles.number}>
+                    <div className={styles.share}>
                       {share === shares ? (
-                        "1"
+                        item.quantity
                       ) : (
-                        <Fraction numerator={share} denominator={shares} />
+                        <Fraction
+                          numerator={share * item.quantity}
+                          denominator={shares}
+                        />
                       )}
                     </div>
                     <div>=</div>
                     <div className={styles.number}>
-                      {formatMoney(item.price * (share / shares))}
+                      {formatMoney(item.sum * (share / shares))}
                     </div>
                   </React.Fragment>
                 ))}
@@ -91,7 +104,7 @@ function TotalCard({ name, records }: TotalCardProps) {
             <span>
               {formatMoney(
                 records
-                  .map((r) => r.item.price * (r.share / r.shares))
+                  .map((r) => r.item.sum * (r.share / r.shares))
                   .reduce((sum, add) => sum + add, 0)
               )}
             </span>

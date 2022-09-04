@@ -38,7 +38,8 @@
   font-size: 1.2rem;
 }
 
-.itemSubtitle {
+.itemSubtitle,
+.itemSubtitle *{
   font-family: monospace;
 }
 

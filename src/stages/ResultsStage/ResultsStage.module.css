@@ -25,39 +25,66 @@
   font-family: monospace;
 }
 
-.details {
+.gridDetails {
   width: 100%;
   padding-bottom: .4em;
   display: grid;
-  grid-template-columns: 1fr repeat(5, min-content);
+  grid-template-columns: min-content 1fr repeat(5, min-content);
   row-gap: 0.3em;
   column-gap: .5em;
   transition: height ease 200ms;
   position: relative;
+  counter-reset: item;
 }
 
-.details * {
+.gridDetails * {
   font: .7rem monospace;
   min-width: 0;
 }
 
-.details > * {
+.gridDetails>* {
   display: flex;
   justify-content: flex-start;
-  align-items: center;
+  overflow-wrap: break-word;
 }
 
-.details > .number {
+.gridDetails>.number {
   justify-content: flex-end;
 }
 
-.details > :nth-child(6n) {
+.gridDetails>.share {
+  justify-content: center;
+}
+
+.gridDetails> :nth-child(7n) {
   font-weight: bold;
 }
 
-.details > :last-child {
+.gridDetails> :last-child {
   grid-column: 1/-1;
   border-top: 2px dotted white;
+}
+
+/* .gridDetails>:first-child::before {
+  content: "#";
+  font-family: monospace;
+}
+
+.gridDetails>:not(:last-child, :first-child):where(:nth-child(6n+1))::before {
+  content: counter(item);
+  counter-increment: item;
+  font-family: monospace;
+  position: absolute;
+  left: -.4em;
+} */
+
+.gridTitle {
+  font-weight: bold;
+}
+
+.fraction * {
+  font-size: 0.5rem;
+  font-weight: bold;
 }
 
 .totalLine {

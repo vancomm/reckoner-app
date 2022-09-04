@@ -11,7 +11,6 @@ import Card, {
 
 import { InputRecord, useAppState } from "../../contexts/AppStateContext";
 import { UniqueItem } from "../../utils/parseReceiptDocument";
-import range from "../../utils/range";
 import styles from "./ItemsStage.module.css";
 
 interface ItemContainerProps {
@@ -21,7 +20,7 @@ interface ItemContainerProps {
 function ItemContainer({ item }: ItemContainerProps) {
   const { names, inputRecords, setInputRecords } = useAppState();
 
-  const { index, name, price, quantity } = item;
+  const { index, name, price, quantity, sum } = item;
 
   const isCardFilled = inputRecords
     .filter((r) => r.item === item)
@@ -84,7 +83,13 @@ function ItemContainer({ item }: ItemContainerProps) {
           {name.toLowerCase()}
 
           <Card.Subtitle className={styles.itemSubtitle}>
-            {`${price / 100} × ${quantity}`}
+            {quantity > 1 ? (
+              <>
+                {sum / 100} <i>(= {`${price / 100} × ${quantity}`})</i>
+              </>
+            ) : (
+              price / 100
+            )}
           </Card.Subtitle>
         </Card.Title>
 

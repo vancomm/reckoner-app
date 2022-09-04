@@ -90,8 +90,17 @@ export default function ReceiptStage({ nextFn }: ReceiptStageProps) {
           })}
         >
           {errorMessage ||
-            (receiptData &&
-              `Detected a receipt for ${receiptData.items.length} items`)}
+            (receiptData && (
+              <>
+                {`Detected a receipt for ${receiptData.items.length} items`}
+                {/* <ul>
+                  {receiptData.items.slice(0, 3).map(({ name }, index) => (
+                    <li key={index}>{name}</li>
+                  ))}
+                  {receiptData.items.length > 3 && "..."}
+                </ul> */}
+              </>
+            ))}
         </div>
       )}
     </StageContainer>
