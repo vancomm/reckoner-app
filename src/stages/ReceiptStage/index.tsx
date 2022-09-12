@@ -1,12 +1,15 @@
 import { useState } from "react";
 import cn from "classnames";
+
 import { useAppState } from "../../contexts/AppStateContext";
+
 import StageContainer from "../../components/StageContainer";
+import Button from "../../components/Button";
+
 import parseReceipt, { UniqueItem } from "../../utils/parseReceiptDocument";
+import { isSuccessful } from "../../utils/Optional";
 import testfile from "../../data/test-file.json";
 import styles from "./ReceiptStage.module.css";
-import { isSuccessful } from "../../utils/Optional";
-import { Button } from "../../components/Card";
 
 interface ReceiptStageProps {
   nextFn: () => void;

@@ -2,12 +2,10 @@ import { useState } from "react";
 import cn from "classnames";
 
 import StageContainer from "../../components/StageContainer";
-import Card, {
-  CardContainer,
-  CardActions,
-  Button,
-  Toggle,
-} from "../../components/Card";
+import Card, { CardContainer, CardActions } from "../../components/Card";
+import Toggle from "../../components/Toggle";
+import Button from "../../components/Button";
+import Fraction from "../../components/Fraction";
 
 import { InputRecord, useAppState } from "../../contexts/AppStateContext";
 import { UniqueItem } from "../../utils/parseReceiptDocument";
@@ -18,13 +16,23 @@ interface ItemContainerProps {
 }
 
 function ItemContainer({ item }: ItemContainerProps) {
-  const { names, inputRecords, setInputRecords } = useAppState();
+  const {
+    names,
+    setInputRecords,
+    inputRecordsInterface: { getRecord, getRecords, getShares },
+  } = useAppState();
 
   const { index, name, price, quantity, sum } = item;
 
-  const isCardFilled = inputRecords
-    .filter((r) => r.item === item)
-    .some((r) => r.share > 0);
+  const [isPrecise, setPrecise] = useState(false);
+
+  const isCardFilled = getRecords({ item }).some((r) => r.share > 0);
+
+  const shares = getShares(item);
+
+  const onPreciseToggle = () => {
+    setPrecise((state) => !state);
+  };
 
   const handleNameClick =
     (name: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,9 +49,8 @@ function ItemContainer({ item }: ItemContainerProps) {
     };
 
   const isNameChecked = (name: string) => {
-    const savedShare =
-      inputRecords.find((r) => r.item === item && r.name === name)?.share ?? 0;
-    return savedShare > 0;
+    const share = getRecord({ item, name })?.share ?? 0;
+    return share > 0;
   };
 
   const handleInvertClick = () => {
@@ -72,6 +79,28 @@ function ItemContainer({ item }: ItemContainerProps) {
     });
   };
 
+  const handleShareIncrement = (name: string) => {
+    setInputRecords((state) => {
+      const prev = state.find((r) => r.item === item && r.name === name);
+      const next = { item, name, share: (prev?.share || 0) + 1 };
+      return prev
+        ? state.map((r) => (r === prev ? next : r))
+        : [...state, next];
+    });
+  };
+
+  const handleShareDecrement = (name: string) => {
+    setInputRecords((state) => {
+      const prev = state.find((r) => r.item === item && r.name === name);
+      const next = { item, name, share: (prev?.share || 1) - 1 };
+      return prev
+        ? state.map((r) => (r === prev ? next : r))
+        : [...state, next];
+    });
+  };
+
+  const getShare = (name: string) => getRecord({ item, name })?.share ?? 0;
+
   return (
     <CardContainer
       className={cn(styles.itemContainer, {
@@ -93,30 +122,73 @@ function ItemContainer({ item }: ItemContainerProps) {
           </Card.Subtitle>
         </Card.Title>
 
-        <div className={styles.namePicker}>
-          {names.map((name, i) => (
-            <Toggle
-              key={`item-${index}-name-${i}`}
-              id={`item-${index}-input-${name}`}
-              className={styles.nameLabel}
-              label={name}
-              active={isNameChecked(name)}
-              onClick={handleNameClick(name)}
-            />
-          ))}
+        <div
+          className={cn(styles.namePickerContainer, {
+            [styles.isPrecise]: isPrecise,
+          })}
+        >
+          {names.map((name, i) =>
+            isPrecise ? (
+              <div
+                key={`item-${index}-name-${i}`}
+                className={styles.preciseShareInputContainer}
+              >
+                <div
+                  className={cn(styles.preciseShareInput, {
+                    [styles.checked]: isNameChecked(name),
+                  })}
+                >
+                  <Button
+                    disabled={(getRecord({ item, name })?.share ?? 0) === 0}
+                    onClick={() => handleShareDecrement(name)}
+                  >
+                    -
+                  </Button>
+
+                  <div>{name}</div>
+
+                  <Button onClick={() => handleShareIncrement(name)}>+</Button>
+                </div>
+                {getShare(name) > 0 && (
+                  <Fraction
+                    className={styles.share}
+                    numerator={getShare(name)}
+                    denominator={shares}
+                  />
+                )}
+              </div>
+            ) : (
+              <Toggle
+                id={`item-${index}-input-${name}`}
+                className={styles.namePicker}
+                label={name}
+                active={isNameChecked(name)}
+                onClick={handleNameClick(name)}
+              />
+            )
+          )}
         </div>
       </Card>
 
       <CardActions className={styles.itemCardActions}>
-        <Button
-          className={styles.itemCardAction}
-          label="invert"
-          onClick={handleInvertClick}
-        />
-        <Button
-          className={styles.itemCardAction}
-          label="all"
-          onClick={handleAllClick}
+        <div>
+          <Button
+            className={styles.itemCardAction}
+            label="invert"
+            onClick={handleInvertClick}
+          />
+          <Button
+            className={styles.itemCardAction}
+            label="all"
+            onClick={handleAllClick}
+          />
+        </div>
+        <Toggle
+          id={`item-${index}-toggle`}
+          className={styles.itemCardToggle}
+          label={"precise"}
+          active={isPrecise}
+          onClick={onPreciseToggle}
         />
       </CardActions>
     </CardContainer>

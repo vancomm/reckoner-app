@@ -1,20 +1,31 @@
+import cn from "classnames";
 import { useRef } from "react";
+import { Customizable } from "../../types/Customizable";
+import { Nestable } from "../../types/Nestable";
 import styles from "./Collapsible.module.css";
 
-interface CollapsibleProps {
+interface CollapsibleProps extends Nestable, Customizable {
   open: boolean;
-  children?: React.ReactNode;
 }
 
-export default function Collapsible({ open, children }: CollapsibleProps) {
+export default function Collapsible({
+  open,
+  children,
+  id,
+  className,
+  style,
+}: CollapsibleProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   return (
     <div
+      id={id}
       ref={ref}
-      className={styles.collapsible}
+      className={cn(styles.collapsible, className)}
       style={
-        open ? { height: `${ref.current?.scrollHeight}px` } : { height: "0" }
+        open
+          ? { height: `${ref.current?.scrollHeight}px`, ...style }
+          : { height: "0", ...style }
       }
     >
       {children}

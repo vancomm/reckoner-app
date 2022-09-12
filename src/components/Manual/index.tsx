@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
+
+import { useAppState } from "../../contexts/AppStateContext";
+
 import Container from "../Container";
 import Carousel from "../Carousel";
 import CrossIcon from "../CrossIcon";
-import { Button } from "../Card";
-import { useAppState } from "../../contexts/AppStateContext";
+import Button from "../Button";
+
 import { set } from "../../helpers/cacheHelper";
 import pageOne from "../../data/manual-page-one.md";
 import pageTwo from "../../data/manual-page-two.md";

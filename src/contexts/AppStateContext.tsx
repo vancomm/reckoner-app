@@ -7,17 +7,35 @@ export interface ReceiptData {
   items: UniqueItem[];
 }
 
-export type Result = Record<string, string[]>;
-
-export type Distribution = Record<string, number>;
-
-export type DistributionMap = Map<UniqueItem, Distribution>;
-
 export interface InputRecord {
   item: UniqueItem;
   name: string;
   share: number;
 }
+
+export type InputSetter = () => React.Dispatch<
+  React.SetStateAction<InputRecord[]>
+>;
+
+interface SingleInputGetterProps {
+  item: UniqueItem;
+  name: string;
+}
+
+type SingleInputGetter = (
+  props: SingleInputGetterProps
+) => InputRecord | undefined;
+
+interface ManyInputsGetterProps {
+  item?: UniqueItem;
+  name?: string;
+}
+
+type ManyInputsGetter = (props: ManyInputsGetterProps) => InputRecord[];
+
+export type InputGetter = SingleInputGetter | ManyInputsGetter;
+
+type InputAggregator<T> = (item: UniqueItem) => T;
 
 interface UIState {
   showManual: boolean;
@@ -31,6 +49,11 @@ interface AppStateInterface {
   setReceiptData: React.Dispatch<React.SetStateAction<ReceiptData | undefined>>;
   inputRecords: InputRecord[];
   setInputRecords: React.Dispatch<React.SetStateAction<InputRecord[]>>;
+  inputRecordsInterface: {
+    getRecords: ManyInputsGetter;
+    getRecord: SingleInputGetter;
+    getShares: InputAggregator<number>;
+  };
   uiState: UIState;
 }
 
@@ -63,6 +86,38 @@ export function AppStateProvider({ children }: StateProviderProps) {
 
   const [inputRecords, setInputRecords] = useState<InputRecord[]>([]);
 
+  const getRecords: ManyInputsGetter = useMemo(
+    () =>
+      ({ item, name }) => {
+        return inputRecords.filter((r) =>
+          !item
+            ? !name
+              ? true
+              : r.name === name
+            : !name
+            ? r.item === item
+            : r.item === item && r.name === name
+        );
+      },
+    [inputRecords]
+  );
+
+  const getRecord: SingleInputGetter = useMemo(
+    () =>
+      ({ item, name }) => {
+        return inputRecords.find((r) => r.item === item && r.name === name);
+      },
+    [inputRecords]
+  );
+
+  const getShares: InputAggregator<number> = useMemo(
+    () => (item) =>
+      getRecords({ item })
+        .map((r) => r.share)
+        .reduce((sum, add) => sum + add, 0),
+    [getRecords]
+  );
+
   const [showManual, setShowManual] = useState(false);
 
   const uiState: UIState = useMemo(
@@ -77,10 +132,23 @@ export function AppStateProvider({ children }: StateProviderProps) {
       receiptData,
       setReceiptData: saveReceiptData,
       inputRecords,
+      inputRecordsInterface: {
+        getRecords,
+        getRecord,
+        getShares,
+      },
       setInputRecords,
       uiState,
     }),
-    [names, receiptData, inputRecords, uiState]
+    [
+      names,
+      receiptData,
+      inputRecords,
+      getRecords,
+      getRecord,
+      getShares,
+      uiState,
+    ]
   );
 
   const init = async () =>

@@ -1,6 +1,8 @@
 import cn from "classnames";
-import { Customizable } from "../../types/Customizable";
+import Button from "../Button";
+import Toggle from "../Toggle";
 import { Nestable } from "../../types/Nestable";
+import { Customizable } from "../../types/Customizable";
 import styles from "./Card.module.css";
 
 export interface CardProps extends Customizable, Nestable {}
@@ -49,65 +51,6 @@ export function CardActions({ id, className, style, children }: CardProps) {
   );
 }
 
-interface ButtonProps extends Nestable, Customizable {
-  label?: string;
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
-}
-
-export function Button({
-  id,
-  label,
-  onClick,
-  className,
-  style,
-  children,
-}: ButtonProps) {
-  return (
-    <button
-      id={id}
-      className={cn(styles.button, className)}
-      onClick={onClick}
-      style={style}
-    >
-      {label}
-      {children}
-    </button>
-  );
-}
-
 CardActions.Button = Button;
-
-interface ToggleProps extends Customizable {
-  id: string;
-  active: boolean;
-  label: string;
-  onClick?: React.ChangeEventHandler<HTMLInputElement>;
-}
-
-export function Toggle({
-  id,
-  active,
-  label,
-  onClick,
-  className,
-  style,
-}: ToggleProps) {
-  return (
-    <div className={styles.cardAction}>
-      <input
-        id={id}
-        className={styles.toggleInput}
-        type="checkbox"
-        value={label}
-        checked={active}
-        onChange={onClick}
-        style={style}
-      />
-      <label htmlFor={id} className={cn(styles.toggleLabel, className)}>
-        {label}
-      </label>
-    </div>
-  );
-}
 
 CardActions.Toggle = Toggle;
