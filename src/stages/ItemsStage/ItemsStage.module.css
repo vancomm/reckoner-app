@@ -141,8 +141,12 @@
 .preciseShareInputContainer {
   display: flex;
   align-items: center;
-  background-color: var(--bg-overlay-light);
-  border-radius: .3em;
+  background-color: var(--bg-overlay-hover);
+  border-radius: .4em;
+}
+
+.preciseShareInputContainer * {
+  color: white !important;
 }
 
 .preciseShareInput {
@@ -151,13 +155,21 @@
   grid-template-columns: repeat(auto-fit, min-content);
   grid-auto-flow: column;
   align-items: center;
-  background-color: var(--bg-overlay-light);
+  background-color: transparent;
   border-radius: .4em;
   user-select: none;
 }
 
+:not(.success) .preciseShareInput * {
+  color: white !important;
+}
+
+.preciseShareInput.checked * {
+  color: var(--color-success) !important;
+}
+
 .share {
-  padding: 0 .2em;
+  padding: 0 .3em;
   /* border-radius: .3em; */
   /* background-color: black; */
 }
@@ -177,19 +189,14 @@
 .preciseShareInput button {
   width: 1.1em;
   aspect-ratio: 1 / 1.1;
-  /* background-color: var(--bg-overlay); */
   background: none;
   font-size: 1.5rem;
   text-decoration: none;
   opacity: 1;
   border-radius: .3em;
-  /* color: white !important; */
 }
 
-.preciseShareInput button:hover {}
-
 .preciseShareInput button:disabled {
-  /* background-color: grey; */
   cursor: not-allowed;
   opacity: 0.6;
 }
