@@ -2,10 +2,6 @@
   width: 100%;
 }
 
-/* .optionsTitle {
-  align-self: center;
-} */
-
 .optionsRows {
   display: flex;
   flex-direction: column;
