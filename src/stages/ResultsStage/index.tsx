@@ -1,12 +1,16 @@
 import React, { useRef, useState } from "react";
+
+import Fraction from "../../components/Fraction";
 import Collapsible from "../../components/Collapsible";
 import StageContainer from "../../components/StageContainer";
 import Card, { CardContainer, CardActions } from "../../components/Card";
+
 import { InputRecord, useAppState } from "../../contexts/AppStateContext";
-import { UniqueItem } from "../../utils/parseReceiptDocument";
+
 import formatMoney from "../../utils/formatMoney";
+import { UniqueItem } from "../../utils/parseReceiptDocument";
+
 import styles from "./ResultsStage.module.css";
-import Fraction from "../../components/Fraction";
 
 interface TotalRecord extends InputRecord {
   shares: number;
@@ -41,20 +45,22 @@ function TotalCard({ name, records }: TotalCardProps) {
                   <React.Fragment key={`total-${name}-${index}`}>
                     <div>{index + 1}</div>
                     <div>
-                      <span>{item.name}</span>
+                      <span>
+                        {item.name}{" "}
+                        {item.quantity > 1 && (
+                          <span className={styles.itemQuantity}>
+                            ({item.quantity})
+                          </span>
+                        )}
+                      </span>
                     </div>
-                    <div className={styles.number}>
-                      {formatMoney(item.price)}
-                    </div>
+                    <div className={styles.number}>{formatMoney(item.sum)}</div>
                     <div>×</div>
                     <div className={styles.share}>
                       {share === shares ? (
                         item.quantity
                       ) : (
-                        <Fraction
-                          numerator={share * item.quantity}
-                          denominator={shares}
-                        />
+                        <Fraction numerator={share} denominator={shares} />
                       )}
                     </div>
                     <div>=</div>
