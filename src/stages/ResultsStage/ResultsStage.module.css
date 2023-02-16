@@ -87,6 +87,10 @@
   font-weight: bold;
 }
 
+.itemQuantity {
+  color: var(--color-faded);
+}
+
 .totalLine {
   display: flex;
   justify-content: space-between;
